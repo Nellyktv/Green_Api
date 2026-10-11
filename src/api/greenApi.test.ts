@@ -60,6 +60,7 @@ describe('greenApi', () => {
 
     expect(api.get).toHaveBeenCalledWith(`${BASE}/receiveNotification/token123`, {
       params: { receiveTimeout: RECEIVE_TIMEOUT_SEC },
+      timeout: (RECEIVE_TIMEOUT_SEC + 10) * 1000,
       signal: controller.signal,
     });
     expect(result).toBeNull();

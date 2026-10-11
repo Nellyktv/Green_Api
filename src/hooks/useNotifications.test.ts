@@ -1,6 +1,8 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderHook, waitFor } from '@testing-library/react';
+import { AxiosError, type AxiosResponse } from 'axios';
 import { deleteNotification, receiveNotification } from '../api/greenApi';
+import { useAuthStore } from '../store/useAuthStore';
 import { useChatStore } from '../store/useChatStore';
 import { CHAT_ID, createNotificationBody, credentials, pending } from '../test/fixtures';
 import { ERROR_RETRY_DELAY, useNotifications } from './useNotifications';
@@ -66,6 +68,20 @@ describe('useNotifications', () => {
 
     await vi.advanceTimersByTimeAsync(1);
     expect(receiveNotification).toHaveBeenCalledTimes(2);
+  });
+
+  it('если токен недействителен — выходит из аккаунта и не повторяет запросы', async () => {
+    useAuthStore.setState({ credentials });
+    const response = { status: 401 } as AxiosResponse;
+    vi.mocked(receiveNotification).mockRejectedValue(
+      new AxiosError('Unauthorized', 'ERR_BAD_REQUEST', undefined, undefined, response),
+    );
+
+    renderHook(() => useNotifications(credentials));
+
+    await waitFor(() => expect(useAuthStore.getState().credentials).toBeNull());
+    await new Promise((resolve) => setTimeout(resolve, 0));
+    expect(receiveNotification).toHaveBeenCalledTimes(1);
   });
 
   it('при размонтировании обрывает запрос и больше не опрашивает сервер', async () => {

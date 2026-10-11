@@ -47,6 +47,8 @@ export const getChatHistory = async (credentials: Credentials, chatId: string) =
 export const receiveNotification = async (credentials: Credentials, signal?: AbortSignal) => {
   const { data } = await api.get<GreenApiNotification | null>(buildMethodUrl(credentials, 'receiveNotification'), {
     params: { receiveTimeout: RECEIVE_TIMEOUT_SEC },
+    // Запас сверху: клиент не должен оборвать long polling раньше сервера
+    timeout: (RECEIVE_TIMEOUT_SEC + 10) * 1000,
     signal,
   });
   return data || null;
