@@ -1,4 +1,4 @@
-import { Alert, Snackbar } from '@mui/material';
+import { Alert, Snackbar, Stack } from '@mui/material';
 import { useChatHistory } from '../../hooks/useChatHistory';
 import { useSendMessage } from '../../hooks/useSendMessage';
 import { useChatStore } from '../../store/useChatStore';
@@ -6,7 +6,6 @@ import type { Chat, Credentials } from '../../types';
 import { ChatHeader } from './ChatHeader/ChatHeader';
 import { MessageList } from './MessageList/MessageList';
 import { MessageInput } from './MessageInput/MessageInput';
-import styles from './ChatWindow.module.scss';
 
 interface Props {
   chat: Chat;
@@ -20,7 +19,7 @@ export const ChatWindow = ({ chat, credentials, onBack }: Props) => {
   const { send, error, resetError } = useSendMessage(credentials, chat.chatId);
 
   return (
-    <section className={styles.window}>
+    <Stack component='section' sx={{ flex: 1, minHeight: 0 }}>
       <ChatHeader chat={chat} onBack={onBack} />
       <MessageList messages={messages ?? []} loading={historyLoading} />
       <MessageInput onSend={send} />
@@ -35,6 +34,6 @@ export const ChatWindow = ({ chat, credentials, onBack }: Props) => {
           {error}
         </Alert>
       </Snackbar>
-    </section>
+    </Stack>
   );
 };

@@ -1,5 +1,7 @@
+import { chat } from '../theme';
+
 const AVATAR_GRADIENTS = [
-  'linear-gradient(135deg, #6a5cff, #2fa8ff)',
+  chat.accentGradient,
   'linear-gradient(135deg, #ff7a59, #ff4f8b)',
   'linear-gradient(135deg, #22c197, #1aa1d6)',
   'linear-gradient(135deg, #ffb340, #ff7849)',

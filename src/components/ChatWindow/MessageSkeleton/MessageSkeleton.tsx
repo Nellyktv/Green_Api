@@ -1,15 +1,14 @@
-import { Skeleton } from '@mui/material';
+import { Box, Skeleton, Stack } from '@mui/material';
 import { skeletonRows } from './messageSkeletonData';
-import styles from './MessageSkeleton.module.scss';
 
 export const MessageSkeleton = () => {
   return (
-    <div className={styles.skeleton} data-testid='message-skeleton'>
+    <Stack data-testid='message-skeleton' sx={{ gap: 1 }}>
       {skeletonRows.map((el) => (
-        <div key={el.id} className={el.outgoing ? `${styles.row} ${styles.outgoing}` : styles.row}>
-          <Skeleton variant='rounded' width={el.width} height={36} className={styles.bubble} />
-        </div>
+        <Box key={el.id} sx={{ display: 'flex', justifyContent: el.outgoing ? 'flex-end' : 'flex-start' }}>
+          <Skeleton variant='rounded' width={el.width} height={36} sx={{ maxWidth: 360, borderRadius: 4 }} />
+        </Box>
       ))}
-    </div>
+    </Stack>
   );
 };

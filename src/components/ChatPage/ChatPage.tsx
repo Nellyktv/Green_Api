@@ -1,11 +1,10 @@
-import { useMediaQuery, type Theme } from '@mui/material';
+import { Box, useMediaQuery, type Theme } from '@mui/material';
 import { useNotifications } from '../../hooks/useNotifications';
 import { useChatStore } from '../../store/useChatStore';
 import type { Credentials } from '../../types';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { ChatWindow } from '../ChatWindow/ChatWindow';
 import { EmptyChat } from '../EmptyChat/EmptyChat';
-import styles from './ChatPage.module.scss';
 
 interface Props {
   credentials: Credentials;
@@ -25,10 +24,10 @@ export const ChatPage = ({ credentials }: Props) => {
   const showChat = !isMobile || Boolean(activeChat);
 
   return (
-    <div className={styles.page}>
+    <Box sx={{ display: 'flex', height: '100dvh', overflow: 'hidden', bgcolor: 'background.default' }}>
       {showSidebar && <Sidebar credentials={credentials} />}
       {showChat && (
-        <main className={styles.main}>
+        <Box component='main' sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
           {activeChat ? (
             <ChatWindow
               key={activeChat.chatId}
@@ -39,8 +38,8 @@ export const ChatPage = ({ credentials }: Props) => {
           ) : (
             <EmptyChat />
           )}
-        </main>
+        </Box>
       )}
-    </div>
+    </Box>
   );
 };

@@ -1,12 +1,12 @@
 import { useState, type ChangeEvent, type SubmitEvent } from 'react';
-import { Alert, Button, Link, TextField } from '@mui/material';
+import { Alert, Avatar, Box, Button, Link, Paper, Stack, TextField, Typography } from '@mui/material';
 import ChatBubbleRounded from '@mui/icons-material/ChatBubbleRounded';
 import { useLogin } from '../../hooks/useLogin';
 import { useTranslation } from '../../hooks/useTranslation';
+import { chat } from '../../theme';
 import type { Credentials } from '../../types';
 import { LanguageSwitch } from '../LanguageSwitch/LanguageSwitch';
 import { CONSOLE_URL, initialForm, loginFields } from './loginPageData';
-import styles from './LoginPage.module.scss';
 
 export const LoginPage = () => {
   const [form, setForm] = useState<Credentials>(initialForm);
@@ -25,18 +25,43 @@ export const LoginPage = () => {
   };
 
   return (
-    <div className={styles.page}>
-      <form className={styles.card} onSubmit={handleSubmit}>
-        <div className={styles.brand}>
-          <div className={styles.logo}>
+    <Box
+      sx={{
+        minHeight: '100dvh',
+        display: 'flex',
+        alignItems: { xs: 'flex-start', md: 'center' },
+        justifyContent: 'center',
+        p: { xs: 0, md: 2 },
+        bgcolor: { xs: 'background.paper', md: 'background.default' },
+      }}
+    >
+      <Paper
+        component='form'
+        variant='outlined'
+        onSubmit={handleSubmit}
+        sx={{
+          display: 'flex',
+          flexDirection: 'column',
+          gap: 2,
+          width: '100%',
+          maxWidth: { md: 420 },
+          p: { xs: '24px 16px', md: '32px 28px' },
+          borderWidth: { xs: 0, md: 1 },
+          borderRadius: { xs: 0, md: 2 },
+        }}
+      >
+        <Stack direction='row' sx={{ alignItems: 'center', gap: 1.5, mb: 1 }}>
+          <Avatar variant='rounded' sx={{ width: 48, height: 48, background: chat.accentGradient }}>
             <ChatBubbleRounded />
-          </div>
-          <div className={styles.brandText}>
-            <div className={styles.title}>GREEN-API Chat</div>
-            <div className={styles.subtitle}>{t.login.subtitle}</div>
-          </div>
+          </Avatar>
+          <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+            <Typography variant='h6'>GREEN-API Chat</Typography>
+            <Typography variant='caption'>
+              {t.login.subtitle}
+            </Typography>
+          </Box>
           <LanguageSwitch />
-        </div>
+        </Stack>
 
         {loginFields.map((el) => (
           <TextField
@@ -48,7 +73,6 @@ export const LoginPage = () => {
             value={form[el.name]}
             onChange={handleChange}
             autoComplete='off'
-            fullWidth
           />
         ))}
 
@@ -58,13 +82,13 @@ export const LoginPage = () => {
           {t.login.submit}
         </Button>
 
-        <div className={styles.hint}>
+        <Typography variant='caption' sx={{ textAlign: 'center' }}>
           {t.login.consoleHint}{' '}
           <Link href={CONSOLE_URL} target='_blank' rel='noreferrer'>
             {t.login.consoleLink}
           </Link>
-        </div>
-      </form>
-    </div>
+        </Typography>
+      </Paper>
+    </Box>
   );
 };

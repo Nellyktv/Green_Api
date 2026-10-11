@@ -1,9 +1,8 @@
-import { IconButton } from '@mui/material';
+import { Box, IconButton, Stack, Typography } from '@mui/material';
 import ArrowBackRounded from '@mui/icons-material/ArrowBackRounded';
 import { useTranslation } from '../../../hooks/useTranslation';
 import type { Chat } from '../../../types';
 import { ChatAvatar } from '../../ChatAvatar/ChatAvatar';
-import styles from './ChatHeader.module.scss';
 
 interface Props {
   chat: Chat;
@@ -14,17 +13,34 @@ export const ChatHeader = ({ chat, onBack }: Props) => {
   const t = useTranslation();
 
   return (
-    <header className={styles.header}>
+    <Stack
+      component='header'
+      direction='row'
+      sx={{
+        alignItems: 'center',
+        gap: { xs: 1, md: 1.5 },
+        minHeight: { xs: 56, md: 64 },
+        px: { xs: 1.5, md: 2.5 },
+        py: { xs: 1, md: 1.25 },
+        bgcolor: 'background.paper',
+        borderBottom: 1,
+        borderColor: 'divider',
+      }}
+    >
       {onBack && (
         <IconButton edge='start' onClick={onBack} aria-label={t.chat.back}>
           <ArrowBackRounded />
         </IconButton>
       )}
       <ChatAvatar chatId={chat.chatId} name={chat.name} size={40} />
-      <div className={styles.info}>
-        <div className={styles.name}>{chat.name}</div>
-        <div className={styles.status}>Telegram</div>
-      </div>
-    </header>
+      <Box sx={{ minWidth: 0 }}>
+        <Typography variant='subtitle1' component='div' noWrap>
+          {chat.name}
+        </Typography>
+        <Typography variant='caption'>
+          Telegram
+        </Typography>
+      </Box>
+    </Stack>
   );
 };

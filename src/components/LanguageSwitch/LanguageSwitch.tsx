@@ -4,7 +4,6 @@ import { languages } from '../../i18n/translations';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useAppStore } from '../../store/useAppStore';
 import type { Locale } from '../../types';
-import styles from './LanguageSwitch.module.scss';
 
 export const LanguageSwitch = () => {
   const locale = useAppStore((s) => s.locale);
@@ -22,7 +21,7 @@ export const LanguageSwitch = () => {
       value={locale}
       onChange={handleChange}
       aria-label={t.language}
-      className={styles.group}
+      sx={{ flexShrink: 0 }}
     >
       {languages.map((el) => (
         <ToggleButton key={el.value} value={el.value}>

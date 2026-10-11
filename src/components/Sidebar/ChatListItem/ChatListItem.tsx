@@ -1,10 +1,9 @@
-import { ListItemButton } from '@mui/material';
+import { Box, ListItemButton, Stack, Typography } from '@mui/material';
 import { useTranslation } from '../../../hooks/useTranslation';
 import { formatTime } from '../../../lib/formatTime';
 import { useAppStore } from '../../../store/useAppStore';
 import type { Chat, Message } from '../../../types';
 import { ChatAvatar } from '../../ChatAvatar/ChatAvatar';
-import styles from './ChatListItem.module.scss';
 
 interface Props {
   chat: Chat;
@@ -23,15 +22,23 @@ export const ChatListItem = ({ chat, lastMessage, active, onSelect }: Props) => 
   };
 
   return (
-    <ListItemButton selected={active} onClick={() => onSelect(chat.chatId)} className={styles.item}>
+    <ListItemButton selected={active} onClick={() => onSelect(chat.chatId)}>
       <ChatAvatar chatId={chat.chatId} name={chat.name} />
-      <div className={styles.info}>
-        <div className={styles.row}>
-          <span className={styles.name}>{chat.name}</span>
-          {lastMessage && <span className={styles.time}>{formatTime(lastMessage.timestamp, locale)}</span>}
-        </div>
-        <div className={styles.preview}>{getPreview()}</div>
-      </div>
+      <Box sx={{ flexGrow: 1, minWidth: 0 }}>
+        <Stack direction='row' sx={{ alignItems: 'baseline', gap: 1 }}>
+          <Typography variant='subtitle2' component='div' noWrap sx={{ flexGrow: 1 }}>
+            {chat.name}
+          </Typography>
+          {lastMessage && (
+            <Typography variant='caption' sx={{ flexShrink: 0 }}>
+              {formatTime(lastMessage.timestamp, locale)}
+            </Typography>
+          )}
+        </Stack>
+        <Typography variant='body2' component='div' noWrap sx={{ color: 'text.secondary' }}>
+          {getPreview()}
+        </Typography>
+      </Box>
     </ListItemButton>
   );
 };

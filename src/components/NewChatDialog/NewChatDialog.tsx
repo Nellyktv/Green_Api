@@ -3,7 +3,6 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
 import { useCreateChat } from '../../hooks/useCreateChat';
 import { useTranslation } from '../../hooks/useTranslation';
 import type { Credentials } from '../../types';
-import styles from './NewChatDialog.module.scss';
 
 interface Props {
   open: boolean;
@@ -35,7 +34,6 @@ export const NewChatDialog = ({ open, credentials, onClose }: Props) => {
         <DialogContent>
           <TextField
             autoFocus
-            fullWidth
             margin='dense'
             label={t.newChat.label}
             placeholder='+375 29 123-45-67'
@@ -45,7 +43,7 @@ export const NewChatDialog = ({ open, credentials, onClose }: Props) => {
             helperText={error || t.newChat.hint}
           />
         </DialogContent>
-        <DialogActions className={styles.actions}>
+        <DialogActions>
           <Button onClick={handleClose}>{t.newChat.cancel}</Button>
           <Button type='submit' variant='contained' loading={loading} disabled={!value.trim()}>
             {t.newChat.submit}

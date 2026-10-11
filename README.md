@@ -28,7 +28,7 @@
 ## Стек
 
 - React 19 + TypeScript + Vite
-- MUI, SCSS-модули
+- MUI: тема в `src/theme.ts`, стили компонентов через `sx` и компоненты `Stack`/`Typography`, без отдельных CSS-файлов
 - Zustand
 - Axios
 - Vitest + Testing Library
@@ -38,7 +38,7 @@
 ```
 src/
 ├── api/            client.ts — axios, greenApi.ts — методы GREEN-API
-├── components/     компонент = папка: Component.tsx, *.module.scss (все стили), *Data.ts
+├── components/     компонент = папка: Component.tsx, *Data.ts (данные для компонента)
 │   ├── LoginPage/
 │   ├── ChatPage/        раскладка: список чатов + открытый чат
 │   ├── Sidebar/         список чатов, ChatListItem/
@@ -49,7 +49,7 @@ src/
 ├── store/          useAuthStore, useChatStore, useAppStore (язык)
 ├── lib/            чистые функции: разбор уведомлений, истории, номера телефона и т.д.
 ├── i18n/           ru.ts, en.ts
-├── styles/         _variables.scss — общие переменные для SCSS-модулей
+├── theme.ts        тема MUI и цвета чата
 ├── test/           настройка тестов и общие тестовые данные
 └── types.ts
 ```
