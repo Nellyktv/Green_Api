@@ -23,7 +23,7 @@
     background: $bubble-out;
   }
 
-  @media (max-width: $mobile) {
+  @media (width < $breakpoint) {
     max-width: 85%;
   }
 }

@@ -15,7 +15,7 @@
     margin-top: auto;
   }
 
-  @media (max-width: $mobile) {
+  @media (width < $breakpoint) {
     padding: 12px;
   }
 }

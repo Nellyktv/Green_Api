@@ -8,7 +8,7 @@
   background: $surface;
   border-top: 1px solid $border;
 
-  @media (max-width: $mobile) {
+  @media (width < $breakpoint) {
     padding: 8px 8px calc(8px + env(safe-area-inset-bottom));
   }
 }
@@ -20,7 +20,7 @@
   font-size: 16px;
   line-height: 1.4;
 
-  @media (min-width: $desktop) {
+  @media (width >= $breakpoint) {
     font-size: 15px;
   }
 }

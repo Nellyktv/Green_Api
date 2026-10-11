@@ -8,7 +8,7 @@
   background: $surface;
   border-right: 1px solid $border;
 
-  @media (max-width: $mobile) {
+  @media (width < $breakpoint) {
     width: 100%;
     border-right: none;
   }

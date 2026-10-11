@@ -9,7 +9,7 @@
   background: $surface;
   border-bottom: 1px solid $border;
 
-  @media (max-width: $mobile) {
+  @media (width < $breakpoint) {
     min-height: 56px;
     padding: 8px 12px;
     gap: 8px;

@@ -9,7 +9,7 @@
   padding: 16px;
   background: $bg;
 
-  @media (max-width: $mobile) {
+  @media (width < $breakpoint) {
     align-items: flex-start;
     padding: 0;
     background: $surface;
@@ -27,7 +27,7 @@
   border: 1px solid $border;
   border-radius: 20px;
 
-  @media (max-width: $mobile) {
+  @media (width < $breakpoint) {
     max-width: none;
     padding: 24px 16px;
     border: none;
