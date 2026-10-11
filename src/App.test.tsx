@@ -5,28 +5,28 @@ import { useAuthStore } from './store/useAuthStore';
 import { credentials } from './test/fixtures';
 import App from './App';
 
-// vi.mock поднимается выше импортов, поэтому висящий запрос описан прямо здесь
+// vi.mock is hoisted above the imports, so the hanging request is defined right here
 vi.mock('./api/greenApi', () => ({
   receiveNotification: vi.fn(() => new Promise(() => {})),
 }));
 
 describe('App', () => {
   beforeEach(() => {
-    useAppStore.setState({ locale: 'ru' });
+    useAppStore.setState({ locale: 'en' });
   });
 
-  it('без данных инстанса показывает страницу входа', () => {
+  it('shows the login page without instance data', () => {
     useAuthStore.setState({ credentials: null });
     render(<App />);
 
-    expect(screen.getByRole('button', { name: 'Войти' })).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Sign in' })).toBeInTheDocument();
   });
 
-  it('после входа показывает чаты', () => {
+  it('shows chats after signing in', () => {
     useAuthStore.setState({ credentials });
     render(<App />);
 
-    expect(screen.getByText('Чаты')).toBeInTheDocument();
-    expect(screen.getByText('Выберите чат или создайте новый')).toBeInTheDocument();
+    expect(screen.getByText('Chats')).toBeInTheDocument();
+    expect(screen.getByText('Select a chat or start a new one')).toBeInTheDocument();
   });
 });

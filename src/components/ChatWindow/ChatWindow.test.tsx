@@ -21,53 +21,53 @@ describe('ChatWindow', () => {
     vi.spyOn(console, 'error').mockImplementation(() => {});
     vi.mocked(getChatHistory).mockResolvedValue([]);
     useChatStore.setState({ chats: [chat], messages: {}, activeChatId: CHAT_ID });
-    useAppStore.setState({ locale: 'ru' });
+    useAppStore.setState({ locale: 'en' });
   });
 
-  it('показывает скелетон, пока грузится история, а потом сообщения из неё', async () => {
+  it('shows a skeleton while history loads, then its messages', async () => {
     let resolveHistory: (history: HistoryMessage[]) => void = () => {};
     vi.mocked(getChatHistory).mockReturnValue(new Promise((resolve) => (resolveHistory = resolve)));
 
     render(<ChatWindow chat={chat} credentials={credentials} />);
     expect(screen.getByTestId('message-skeleton')).toBeInTheDocument();
 
-    await act(async () => resolveHistory([createHistoryMessage({ textMessage: 'Как дела?' })]));
+    await act(async () => resolveHistory([createHistoryMessage({ textMessage: 'How are you?' })]));
 
-    expect(screen.getByText('Как дела?')).toBeInTheDocument();
+    expect(screen.getByText('How are you?')).toBeInTheDocument();
     expect(screen.queryByTestId('message-skeleton')).not.toBeInTheDocument();
   });
 
-  it('отправляет сообщение по Enter и показывает его в чате', async () => {
+  it('sends a message on Enter and shows it in the chat', async () => {
     vi.mocked(sendMessage).mockResolvedValue({ idMessage: 'sent-1' });
     const user = userEvent.setup();
     render(<ChatWindow chat={chat} credentials={credentials} />);
 
-    const input = screen.getByRole('textbox', { name: 'Сообщение' });
-    await user.type(input, 'Привет!{Enter}');
+    const input = screen.getByRole('textbox', { name: 'Message' });
+    await user.type(input, 'Hello!{Enter}');
 
-    expect(sendMessage).toHaveBeenCalledWith(credentials, CHAT_ID, 'Привет!');
-    expect(await screen.findByText('Привет!')).toBeInTheDocument();
+    expect(sendMessage).toHaveBeenCalledWith(credentials, CHAT_ID, 'Hello!');
+    expect(await screen.findByText('Hello!')).toBeInTheDocument();
     expect(input).toHaveValue('');
   });
 
-  it('если отправить не вышло — показывает ошибку и не стирает текст', async () => {
+  it('shows an error and keeps the text when sending fails', async () => {
     vi.mocked(sendMessage).mockRejectedValue(new Error('Network Error'));
     const user = userEvent.setup();
     render(<ChatWindow chat={chat} credentials={credentials} />);
 
-    const input = screen.getByRole('textbox', { name: 'Сообщение' });
-    await user.type(input, 'Привет!{Enter}');
+    const input = screen.getByRole('textbox', { name: 'Message' });
+    await user.type(input, 'Hello!{Enter}');
 
-    expect(await screen.findByText('Не удалось отправить сообщение')).toBeInTheDocument();
-    expect(input).toHaveValue('Привет!');
+    expect(await screen.findByText('Could not send the message')).toBeInTheDocument();
+    expect(input).toHaveValue('Hello!');
   });
 
-  it('сразу показывает ответ собеседника, пришедший через уведомления', async () => {
+  it('immediately shows the reply that arrived through notifications', async () => {
     render(<ChatWindow chat={chat} credentials={credentials} />);
     await waitFor(() => expect(screen.queryByTestId('message-skeleton')).not.toBeInTheDocument());
 
-    act(() => useChatStore.getState().addMessage(createMessage({ text: 'Ответ из Telegram' })));
+    act(() => useChatStore.getState().addMessage(createMessage({ text: 'Reply from Telegram' })));
 
-    expect(screen.getByText('Ответ из Telegram')).toBeInTheDocument();
+    expect(screen.getByText('Reply from Telegram')).toBeInTheDocument();
   });
 });

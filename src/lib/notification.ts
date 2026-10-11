@@ -11,9 +11,9 @@ const getMessageText = (messageData?: MessageData) => {
   return undefined;
 };
 
-// incomingMessageReceived — нам написали, outgoingMessageReceived — мы написали с телефона.
-// Сообщения, отправленные из этого чата (outgoingAPIMessageReceived), уже добавлены при отправке,
-// а статусы, медиа и прочие уведомления по ТЗ не нужны — их пропускаем
+// incomingMessageReceived — someone wrote to us, outgoingMessageReceived — we wrote from the phone.
+// Messages sent from this chat (outgoingAPIMessageReceived) are already added on send,
+// and statuses, media and other notifications are out of scope — skip them
 export const parseNotification = (body: NotificationBody): ParsedNotification | null => {
   const isIncoming = body.typeWebhook === 'incomingMessageReceived';
   const isOutgoing = body.typeWebhook === 'outgoingMessageReceived';

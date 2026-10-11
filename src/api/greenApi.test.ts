@@ -23,20 +23,20 @@ describe('greenApi', () => {
     vi.resetAllMocks();
   });
 
-  it('собирает адрес метода из apiUrl, idInstance и apiTokenInstance', () => {
+  it('builds the method URL from apiUrl, idInstance and apiTokenInstance', () => {
     expect(buildMethodUrl(credentials, 'sendMessage')).toBe(`${BASE}/sendMessage/token123`);
   });
 
-  it('sendMessage отправляет chatId и текст', async () => {
+  it('sendMessage sends chatId and text', async () => {
     vi.mocked(api.post).mockResolvedValue(axiosResponse({ idMessage: 'id-1' }));
 
-    const result = await sendMessage(credentials, CHAT_ID, 'Привет');
+    const result = await sendMessage(credentials, CHAT_ID, 'Hello');
 
-    expect(api.post).toHaveBeenCalledWith(`${BASE}/sendMessage/token123`, { chatId: CHAT_ID, message: 'Привет' });
+    expect(api.post).toHaveBeenCalledWith(`${BASE}/sendMessage/token123`, { chatId: CHAT_ID, message: 'Hello' });
     expect(result).toEqual({ idMessage: 'id-1' });
   });
 
-  it('checkAccount передаёт номер телефона как есть', async () => {
+  it('checkAccount passes the phone number as is', async () => {
     vi.mocked(api.post).mockResolvedValue(axiosResponse({ exist: true, chatId: CHAT_ID }));
 
     await checkAccount(credentials, { phoneNumber: 375291234567 });
@@ -44,7 +44,7 @@ describe('greenApi', () => {
     expect(api.post).toHaveBeenCalledWith(`${BASE}/checkAccount/token123`, { phoneNumber: 375291234567 });
   });
 
-  it('getChatHistory запрашивает последние сообщения чата', async () => {
+  it('getChatHistory requests the latest chat messages', async () => {
     vi.mocked(api.post).mockResolvedValue(axiosResponse([]));
 
     await getChatHistory(credentials, CHAT_ID);
@@ -52,7 +52,7 @@ describe('greenApi', () => {
     expect(api.post).toHaveBeenCalledWith(`${BASE}/getChatHistory/token123`, { chatId: CHAT_ID, count: HISTORY_COUNT });
   });
 
-  it('receiveNotification передаёт receiveTimeout и signal, а пустой ответ превращает в null', async () => {
+  it('receiveNotification passes receiveTimeout and signal and turns an empty response into null', async () => {
     const controller = new AbortController();
     vi.mocked(api.get).mockResolvedValue(axiosResponse(''));
 
@@ -66,7 +66,7 @@ describe('greenApi', () => {
     expect(result).toBeNull();
   });
 
-  it('deleteNotification добавляет receiptId в конец адреса', async () => {
+  it('deleteNotification appends receiptId to the URL', async () => {
     vi.mocked(api.delete).mockResolvedValue(axiosResponse({ result: true }));
 
     await deleteNotification(credentials, 42);

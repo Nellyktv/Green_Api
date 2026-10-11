@@ -1,6 +1,6 @@
 import axios from 'axios';
 
-// baseURL не задаём: apiUrl у каждого инстанса свой, полный адрес собирается в greenApi.ts
+// No baseURL: every instance has its own apiUrl, the full address is built in greenApi.ts
 const api = axios.create({
   timeout: 30000,
 });

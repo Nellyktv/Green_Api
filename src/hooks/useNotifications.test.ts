@@ -24,7 +24,7 @@ describe('useNotifications', () => {
     vi.useRealTimers();
   });
 
-  it('добавляет входящее сообщение в чат и удаляет уведомление из очереди', async () => {
+  it('adds an incoming message to the chat and deletes the notification from the queue', async () => {
     vi.mocked(receiveNotification)
       .mockResolvedValueOnce({ receiptId: 7, body: createNotificationBody() })
       .mockImplementation(pending);
@@ -37,7 +37,7 @@ describe('useNotifications', () => {
     expect(messages[CHAT_ID][0].text).toBe('Hello from Green-API!');
   });
 
-  it('удаляет из очереди и те уведомления, которые не показываются в чате', async () => {
+  it('also deletes notifications that are not shown in the chat', async () => {
     vi.mocked(receiveNotification)
       .mockResolvedValueOnce({ receiptId: 8, body: createNotificationBody({ typeWebhook: 'outgoingMessageStatus' }) })
       .mockImplementation(pending);
@@ -48,7 +48,7 @@ describe('useNotifications', () => {
     expect(useChatStore.getState().chats).toEqual([]);
   });
 
-  it('если очередь пуста — сразу ждёт следующее уведомление, ничего не удаляя', async () => {
+  it('when the queue is empty, waits for the next notification without deleting anything', async () => {
     vi.mocked(receiveNotification).mockResolvedValueOnce(null).mockImplementation(pending);
 
     renderHook(() => useNotifications(credentials));
@@ -57,7 +57,7 @@ describe('useNotifications', () => {
     expect(deleteNotification).not.toHaveBeenCalled();
   });
 
-  it('после ошибки сети делает паузу и пробует снова', async () => {
+  it('pauses after a network error and tries again', async () => {
     vi.useFakeTimers();
     vi.mocked(receiveNotification).mockRejectedValueOnce(new Error('Network Error')).mockImplementation(pending);
 
@@ -70,7 +70,7 @@ describe('useNotifications', () => {
     expect(receiveNotification).toHaveBeenCalledTimes(2);
   });
 
-  it('если токен недействителен — выходит из аккаунта и не повторяет запросы', async () => {
+  it('logs out and stops polling when the token is invalid', async () => {
     useAuthStore.setState({ credentials });
     const response = { status: 401 } as AxiosResponse;
     vi.mocked(receiveNotification).mockRejectedValue(
@@ -84,7 +84,7 @@ describe('useNotifications', () => {
     expect(receiveNotification).toHaveBeenCalledTimes(1);
   });
 
-  it('при размонтировании обрывает запрос и больше не опрашивает сервер', async () => {
+  it('aborts the request on unmount and stops polling the server', async () => {
     vi.mocked(receiveNotification).mockImplementation(
       (_credentials, signal) =>
         new Promise((_resolve, reject) => {

@@ -23,52 +23,52 @@ describe('LoginPage', () => {
     vi.resetAllMocks();
     vi.spyOn(console, 'error').mockImplementation(() => {});
     useAuthStore.setState({ credentials: null });
-    useAppStore.setState({ locale: 'ru' });
+    useAppStore.setState({ locale: 'en' });
   });
 
-  it('кнопка входа неактивна, пока не заполнены idInstance и apiTokenInstance', async () => {
+  it('the sign-in button is disabled until idInstance and apiTokenInstance are filled', async () => {
     render(<LoginPage />);
-    expect(screen.getByRole('button', { name: 'Войти' })).toBeDisabled();
+    expect(screen.getByRole('button', { name: 'Sign in' })).toBeDisabled();
 
     await fillForm();
-    expect(screen.getByRole('button', { name: 'Войти' })).toBeEnabled();
+    expect(screen.getByRole('button', { name: 'Sign in' })).toBeEnabled();
   });
 
-  it('входит, если к инстансу привязан аккаунт', async () => {
+  it('signs in when an account is linked to the instance', async () => {
     vi.mocked(getStateInstance).mockResolvedValue({ stateInstance: 'authorized' });
     render(<LoginPage />);
 
     const user = await fillForm();
-    await user.click(screen.getByRole('button', { name: 'Войти' }));
+    await user.click(screen.getByRole('button', { name: 'Sign in' }));
 
     const expected = { idInstance: '4100000001', apiTokenInstance: 'token123', apiUrl: DEFAULT_API_URL };
     expect(getStateInstance).toHaveBeenCalledWith(expected);
     expect(useAuthStore.getState().credentials).toEqual(expected);
   });
 
-  it('не пускает, если инстанс не авторизован, и объясняет почему', async () => {
+  it('does not sign in when the instance is not authorized and explains why', async () => {
     vi.mocked(getStateInstance).mockResolvedValue({ stateInstance: 'notAuthorized' });
     render(<LoginPage />);
 
     const user = await fillForm();
-    await user.click(screen.getByRole('button', { name: 'Войти' }));
+    await user.click(screen.getByRole('button', { name: 'Sign in' }));
 
     expect(await screen.findByRole('alert')).toHaveTextContent('notAuthorized');
     expect(useAuthStore.getState().credentials).toBeNull();
   });
 
-  it('показывает ошибку, если данные неверные или сервер недоступен', async () => {
+  it('shows an error when the data is wrong or the server is unavailable', async () => {
     vi.mocked(getStateInstance).mockRejectedValue(new Error('Request failed with status code 401'));
     render(<LoginPage />);
 
     const user = await fillForm();
-    await user.click(screen.getByRole('button', { name: 'Войти' }));
+    await user.click(screen.getByRole('button', { name: 'Sign in' }));
 
-    expect(await screen.findByRole('alert')).toHaveTextContent('Не удалось подключиться');
+    expect(await screen.findByRole('alert')).toHaveTextContent('Could not connect');
     expect(useAuthStore.getState().credentials).toBeNull();
   });
 
-  it('переключает язык интерфейса', async () => {
+  it('switches the interface language', async () => {
     const user = userEvent.setup();
     render(<LoginPage />);
 

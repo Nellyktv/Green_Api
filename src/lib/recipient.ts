@@ -5,8 +5,8 @@ const USERNAME_PATTERN = /^@[a-zA-Z0-9_]{5,32}$/;
 const MIN_PHONE_LENGTH = 10;
 const MAX_PHONE_LENGTH = 15;
 
-// Получателя можно указать номером в любом привычном виде (+375 (29) 123-45-67)
-// или через @username, если человек скрыл в Telegram поиск по номеру
+// The recipient can be a phone number in any common format (+375 (29) 123-45-67)
+// or a @username, if the person has hidden number search in Telegram
 export const parseRecipient = (value: string): Recipient | null => {
   const input = value.trim();
 

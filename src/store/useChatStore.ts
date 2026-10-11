@@ -24,7 +24,6 @@ export const useChatStore = create<ChatStore>((set) => ({
   messages: saved.messages,
   activeChatId: null,
 
-  // Создаёт чат, если его ещё нет, и сразу открывает
   openChat: (chat) =>
     set((state) => ({
       chats: state.chats.some((el) => el.chatId === chat.chatId) ? state.chats : [chat, ...state.chats],
@@ -36,10 +35,10 @@ export const useChatStore = create<ChatStore>((set) => ({
   addMessage: (message, chatName) =>
     set((state) => {
       const chatMessages = state.messages[message.chatId] ?? [];
-      // Одно уведомление может прийти повторно, если его не успели удалить из очереди
+      // The same notification can arrive twice if it wasn't deleted from the queue in time
       if (chatMessages.some((el) => el.id === message.id)) return state;
 
-      // Если нам написали первыми — чата ещё нет, создаём. Чат с новым сообщением поднимаем наверх
+      // If they wrote first, the chat doesn't exist yet — create it. A chat with a new message moves to the top
       const chat = state.chats.find((el) => el.chatId === message.chatId) ?? {
         chatId: message.chatId,
         name: chatName || message.chatId,
@@ -51,7 +50,7 @@ export const useChatStore = create<ChatStore>((set) => ({
       };
     }),
 
-  // История приходит с сервера целиком: добавляем только то, чего ещё нет, и сортируем по времени
+  // History arrives from the server in full: add only what is missing and sort by time
   addHistory: (chatId, history) =>
     set((state) => {
       const chatMessages = state.messages[chatId] ?? [];
@@ -66,8 +65,7 @@ export const useChatStore = create<ChatStore>((set) => ({
   reset: () => set({ chats: [], messages: {}, activeChatId: null }),
 }));
 
-// Сохраняем переписку, чтобы она не пропадала после перезагрузки страницы
-// Выбор чата меняет только activeChatId — переписку в этом случае заново не пишем
+// Selecting a chat only changes activeChatId — don't rewrite the conversation in that case
 useChatStore.subscribe((state, prev) => {
   if (state.chats === prev.chats && state.messages === prev.messages) return;
   saveToStorage(STORAGE_KEY, { chats: state.chats, messages: state.messages });

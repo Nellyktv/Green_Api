@@ -13,7 +13,7 @@ $radius: 12px;
 $sidebar-width: 360px;
 $mobile: 899.98px;
 
-// Фон области сообщений — светлый с точечным узором, как в web.max.ru
+// Message area background — light with a dotted pattern, like web.max.ru
 @mixin chat-background {
   background-color: $chat-bg;
   background-image: radial-gradient(rgba(61, 107, 255, 0.08) 1px, transparent 1px);

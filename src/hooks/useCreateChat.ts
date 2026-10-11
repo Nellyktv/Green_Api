@@ -11,7 +11,7 @@ export const useCreateChat = (credentials: Credentials) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // В Telegram писать можно только по chatId, поэтому сначала находим его по номеру через checkAccount
+  // Telegram messages can only be sent by chatId, so first look it up by number via checkAccount
   const createChat = async (value: string) => {
     const recipient = parseRecipient(value);
     if (!recipient) {

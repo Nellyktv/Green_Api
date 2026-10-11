@@ -3,7 +3,7 @@ import { CHAT_ID, createNotificationBody } from '../test/fixtures';
 import { parseNotification } from './notification';
 
 describe('parseNotification', () => {
-  it('превращает входящее текстовое сообщение в сообщение чата', () => {
+  it('turns an incoming text message into a chat message', () => {
     expect(parseNotification(createNotificationBody())).toEqual({
       message: {
         id: 'msg-1',
@@ -16,12 +16,12 @@ describe('parseNotification', () => {
     });
   });
 
-  it('сообщение, отправленное с телефона, помечает как исходящее', () => {
+  it('marks a message sent from the phone as outgoing', () => {
     const parsed = parseNotification(createNotificationBody({ typeWebhook: 'outgoingMessageReceived' }));
     expect(parsed?.message.type).toBe('outgoing');
   });
 
-  it('понимает extendedTextMessage (текст со ссылкой)', () => {
+  it('understands extendedTextMessage (text with a link)', () => {
     const parsed = parseNotification(
       createNotificationBody({
         messageData: {
@@ -33,7 +33,7 @@ describe('parseNotification', () => {
     expect(parsed?.message.text).toBe('https://green-api.com');
   });
 
-  it('берёт имя отправителя или chatId, если у чата нет названия', () => {
+  it('uses the sender name or chatId when the chat has no name', () => {
     const withSenderName = createNotificationBody({
       senderData: { chatId: CHAT_ID, sender: CHAT_ID, senderName: 'Vasilisa the Wise' },
     });
@@ -45,11 +45,11 @@ describe('parseNotification', () => {
     expect(parseNotification(withoutNames)?.chatName).toBe(CHAT_ID);
   });
 
-  it('пропускает сообщения, отправленные через API — они уже добавлены при отправке', () => {
+  it('skips messages sent through the API — they are already added on send', () => {
     expect(parseNotification(createNotificationBody({ typeWebhook: 'outgoingAPIMessageReceived' }))).toBeNull();
   });
 
-  it('пропускает нетекстовые сообщения и служебные уведомления', () => {
+  it('skips non-text messages and service notifications', () => {
     const image = createNotificationBody({ messageData: { typeMessage: 'imageMessage' } });
     const status = { typeWebhook: 'stateInstanceChanged', timestamp: 1_763_115_112 };
 

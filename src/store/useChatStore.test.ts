@@ -9,7 +9,7 @@ describe('useChatStore', () => {
     useChatStore.setState({ chats: [], messages: {}, activeChatId: null });
   });
 
-  it('создаёт чат, если нам написали первыми', () => {
+  it('creates a chat when they wrote first', () => {
     useChatStore.getState().addMessage(createMessage(), 'Vasilisa');
 
     const { chats, messages } = useChatStore.getState();
@@ -17,7 +17,7 @@ describe('useChatStore', () => {
     expect(messages[CHAT_ID]).toHaveLength(1);
   });
 
-  it('не дублирует сообщение, если уведомление пришло повторно', () => {
+  it('does not duplicate a message when the notification arrives again', () => {
     const { addMessage } = useChatStore.getState();
     addMessage(createMessage());
     addMessage(createMessage());
@@ -25,7 +25,7 @@ describe('useChatStore', () => {
     expect(useChatStore.getState().messages[CHAT_ID]).toHaveLength(1);
   });
 
-  it('поднимает чат с новым сообщением наверх списка', () => {
+  it('moves the chat with a new message to the top of the list', () => {
     const { addMessage } = useChatStore.getState();
     addMessage(createMessage({ id: '1' }));
     addMessage(createMessage({ id: '2', chatId: OTHER_CHAT_ID }));
@@ -34,7 +34,7 @@ describe('useChatStore', () => {
     expect(useChatStore.getState().chats.map((el) => el.chatId)).toEqual([CHAT_ID, OTHER_CHAT_ID]);
   });
 
-  it('openChat открывает существующий чат, не создавая копию', () => {
+  it('openChat opens an existing chat without creating a copy', () => {
     const { openChat } = useChatStore.getState();
     openChat({ chatId: CHAT_ID, name: '+375291234567' });
     openChat({ chatId: CHAT_ID, name: '+375291234567' });
@@ -44,7 +44,7 @@ describe('useChatStore', () => {
     expect(activeChatId).toBe(CHAT_ID);
   });
 
-  it('addHistory добавляет только новые сообщения и сортирует по времени', () => {
+  it('addHistory adds only new messages and sorts them by time', () => {
     const { addMessage, addHistory } = useChatStore.getState();
     addMessage(createMessage({ id: 'b', timestamp: 2000 }));
     addHistory(CHAT_ID, [
@@ -56,7 +56,7 @@ describe('useChatStore', () => {
     expect(useChatStore.getState().messages[CHAT_ID].map((el) => el.id)).toEqual(['a', 'b', 'c']);
   });
 
-  it('сохраняет переписку в localStorage', () => {
+  it('saves the conversation to localStorage', () => {
     useChatStore.getState().addMessage(createMessage(), 'Vasilisa');
 
     const saved = JSON.parse(localStorage.getItem('chats') ?? '{}');
@@ -64,7 +64,7 @@ describe('useChatStore', () => {
     expect(saved.messages[CHAT_ID]).toHaveLength(1);
   });
 
-  it('reset очищает чаты, сообщения и открытый чат', () => {
+  it('reset clears chats, messages and the open chat', () => {
     const { openChat, addMessage, reset } = useChatStore.getState();
     openChat({ chatId: CHAT_ID, name: 'Vasilisa' });
     addMessage(createMessage());

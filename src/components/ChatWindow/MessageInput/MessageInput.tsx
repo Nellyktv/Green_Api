@@ -26,7 +26,6 @@ export const MessageInput = ({ onSend }: Props) => {
     if (sent) setText('');
   };
 
-  // Enter — отправить, Shift+Enter — перенос строки
   const handleKeyDown = (e: KeyboardEvent<HTMLInputElement | HTMLTextAreaElement>) => {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();

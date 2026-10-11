@@ -21,7 +21,6 @@ export const ChatPage = ({ credentials }: Props) => {
 
   const activeChat = chats.find((el) => el.chatId === activeChatId);
 
-  // На телефоне места мало — показываем либо список чатов, либо открытый чат
   const showSidebar = !isMobile || !activeChat;
   const showChat = !isMobile || Boolean(activeChat);
 

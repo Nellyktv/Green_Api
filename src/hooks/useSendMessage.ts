@@ -9,7 +9,7 @@ export const useSendMessage = (credentials: Credentials, chatId: string) => {
   const t = useTranslation();
   const [error, setError] = useState('');
 
-  // Возвращает true, если сообщение ушло — тогда поле ввода можно очистить
+  // Returns true if the message was sent — then the input can be cleared
   const send = async (text: string) => {
     try {
       const { idMessage } = await sendMessage(credentials, chatId, text);

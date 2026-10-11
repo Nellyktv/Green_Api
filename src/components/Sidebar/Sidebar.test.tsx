@@ -11,32 +11,32 @@ describe('Sidebar', () => {
   beforeEach(() => {
     useAuthStore.setState({ credentials });
     useChatStore.setState({ chats: [], messages: {}, activeChatId: null });
-    useAppStore.setState({ locale: 'ru' });
+    useAppStore.setState({ locale: 'en' });
   });
 
-  it('подсказывает, что делать, если чатов ещё нет', () => {
+  it('hints what to do when there are no chats yet', () => {
     render(<Sidebar credentials={credentials} />);
-    expect(screen.getByText(/Чатов пока нет/)).toBeInTheDocument();
+    expect(screen.getByText(/No chats yet/)).toBeInTheDocument();
   });
 
-  it('показывает чаты с последним сообщением и открывает чат по клику', async () => {
-    useChatStore.getState().addMessage(createMessage({ text: 'Привет', type: 'outgoing' }), 'Vasilisa');
+  it('shows chats with the last message and opens a chat on click', async () => {
+    useChatStore.getState().addMessage(createMessage({ text: 'Hello', type: 'outgoing' }), 'Vasilisa');
     const user = userEvent.setup();
     render(<Sidebar credentials={credentials} />);
 
     expect(screen.getByText('Vasilisa')).toBeInTheDocument();
-    expect(screen.getByText('Вы: Привет')).toBeInTheDocument();
+    expect(screen.getByText('You: Hello')).toBeInTheDocument();
 
     await user.click(screen.getByText('Vasilisa'));
     expect(useChatStore.getState().activeChatId).toBe(CHAT_ID);
   });
 
-  it('при выходе удаляет данные инстанса и переписку', async () => {
+  it('removes instance data and conversations on logout', async () => {
     useChatStore.getState().addMessage(createMessage(), 'Vasilisa');
     const user = userEvent.setup();
     render(<Sidebar credentials={credentials} />);
 
-    await user.click(screen.getByRole('button', { name: 'Выйти' }));
+    await user.click(screen.getByRole('button', { name: 'Log out' }));
 
     expect(useAuthStore.getState().credentials).toBeNull();
     expect(useChatStore.getState().chats).toEqual([]);

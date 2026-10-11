@@ -23,7 +23,7 @@ export interface Message {
 
 export type Recipient = { phoneNumber: number } | { username: string };
 
-// Ответы GREEN-API
+// GREEN-API responses
 
 export interface StateInstanceResponse {
   stateInstance: string;

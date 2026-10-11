@@ -19,7 +19,7 @@ export const useAuthStore = create<AuthStore>((set) => ({
     set({ credentials });
   },
 
-  // Выход всегда очищает и переписку, откуда бы он ни был вызван
+  // Logging out always clears the conversations too, wherever it is called from
   logout: () => {
     useChatStore.getState().reset();
     removeFromStorage(STORAGE_KEY);

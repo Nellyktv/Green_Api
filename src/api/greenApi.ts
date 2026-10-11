@@ -13,7 +13,7 @@ import api from './client';
 export const RECEIVE_TIMEOUT_SEC = 20;
 export const HISTORY_COUNT = 50;
 
-// Любой метод GREEN-API вызывается по адресу {apiUrl}/waInstance{idInstance}/{method}/{apiTokenInstance}
+// Every GREEN-API method is called at {apiUrl}/waInstance{idInstance}/{method}/{apiTokenInstance}
 export const buildMethodUrl = (credentials: Credentials, method: string) =>
   `${credentials.apiUrl}/waInstance${credentials.idInstance}/${method}/${credentials.apiTokenInstance}`;
 
@@ -43,11 +43,11 @@ export const getChatHistory = async (credentials: Credentials, chatId: string) =
   return data;
 };
 
-// Long polling: сервер держит запрос до receiveTimeout секунд и отдаёт null, если уведомлений нет
+// Long polling: the server holds the request for up to receiveTimeout seconds and returns null if there are no notifications
 export const receiveNotification = async (credentials: Credentials, signal?: AbortSignal) => {
   const { data } = await api.get<GreenApiNotification | null>(buildMethodUrl(credentials, 'receiveNotification'), {
     params: { receiveTimeout: RECEIVE_TIMEOUT_SEC },
-    // Запас сверху: клиент не должен оборвать long polling раньше сервера
+    // Extra margin: the client must not abort long polling before the server does
     timeout: (RECEIVE_TIMEOUT_SEC + 10) * 1000,
     signal,
   });

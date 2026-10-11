@@ -3,7 +3,7 @@ import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
 export default defineConfig({
-  // Относительные пути — сборка работает и в корне домена, и в подпапке (GitHub Pages)
+  // Relative paths — the build works both at the domain root and in a subfolder (GitHub Pages)
   base: './',
   plugins: [react()],
   test: {

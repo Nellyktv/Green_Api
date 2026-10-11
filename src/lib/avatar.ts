@@ -7,7 +7,7 @@ const AVATAR_GRADIENTS = [
   'linear-gradient(135deg, #3fc8ff, #3d6bff)',
 ];
 
-// Первые буквы первых двух слов: "Иван Петров" → "ИП". У номера телефона букв нет — вернётся ''
+// First letters of the first two words: "John Smith" → "JS". A phone number has no letters — returns ''
 export const getInitials = (name: string) =>
   name
     .split(/\s+/)
@@ -17,7 +17,6 @@ export const getInitials = (name: string) =>
     .join('')
     .toUpperCase();
 
-// Цвет зависит от chatId, поэтому у одного и того же чата он всегда одинаковый
 export const getAvatarGradient = (chatId: string) => {
   const hash = [...chatId].reduce((sum, char) => sum + char.charCodeAt(0), 0);
   return AVATAR_GRADIENTS[hash % AVATAR_GRADIENTS.length];

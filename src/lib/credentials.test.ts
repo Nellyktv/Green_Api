@@ -2,7 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { DEFAULT_API_URL, normalizeCredentials } from './credentials';
 
 describe('normalizeCredentials', () => {
-  it('убирает пробелы и слэш в конце apiUrl', () => {
+  it('trims spaces and the trailing slash of apiUrl', () => {
     expect(
       normalizeCredentials({
         idInstance: ' 4100000001 ',
@@ -16,7 +16,7 @@ describe('normalizeCredentials', () => {
     });
   });
 
-  it('подставляет apiUrl по умолчанию, если поле пустое', () => {
+  it('uses the default apiUrl when the field is empty', () => {
     const credentials = normalizeCredentials({ idInstance: '1', apiTokenInstance: '2', apiUrl: '  ' });
     expect(credentials.apiUrl).toBe(DEFAULT_API_URL);
   });

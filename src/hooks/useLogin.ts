@@ -11,7 +11,6 @@ export const useLogin = () => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Перед входом проверяем, что данные верные и к инстансу уже привязан аккаунт Telegram
   const submit = async (form: Credentials) => {
     const credentials = normalizeCredentials(form);
     setLoading(true);

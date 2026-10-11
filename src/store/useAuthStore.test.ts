@@ -8,7 +8,7 @@ describe('useAuthStore', () => {
     useAuthStore.setState({ credentials: null });
   });
 
-  it('login сохраняет данные инстанса, logout удаляет их', () => {
+  it('login saves the instance data, logout removes it', () => {
     useAuthStore.getState().login(credentials);
     expect(useAuthStore.getState().credentials).toEqual(credentials);
     expect(JSON.parse(localStorage.getItem('credentials') ?? 'null')).toEqual(credentials);
@@ -18,7 +18,7 @@ describe('useAuthStore', () => {
     expect(localStorage.getItem('credentials')).toBeNull();
   });
 
-  it('logout очищает и переписку', () => {
+  it('logout also clears the conversations', () => {
     useChatStore.getState().openChat({ chatId: CHAT_ID, name: 'Vasilisa' });
 
     useAuthStore.getState().logout();
@@ -27,7 +27,7 @@ describe('useAuthStore', () => {
     expect(useChatStore.getState().activeChatId).toBeNull();
   });
 
-  it('после перезагрузки страницы пользователь остаётся в аккаунте', async () => {
+  it('the user stays signed in after a page reload', async () => {
     localStorage.setItem('credentials', JSON.stringify(credentials));
     vi.resetModules();
 

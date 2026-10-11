@@ -1,4 +1,4 @@
-// localStorage может быть недоступен (приватный режим) или переполнен — тогда просто не сохраняем
+// localStorage may be unavailable (private mode) or full — then we just don't persist
 export const loadFromStorage = <T>(key: string, fallback: T): T => {
   try {
     const saved = localStorage.getItem(key);
@@ -12,7 +12,7 @@ export const saveToStorage = (key: string, value: unknown) => {
   try {
     localStorage.setItem(key, JSON.stringify(value));
   } catch (error) {
-    console.warn('Не удалось сохранить данные в localStorage', error);
+    console.warn('Failed to save data to localStorage', error);
   }
 };
 
@@ -20,6 +20,6 @@ export const removeFromStorage = (key: string) => {
   try {
     localStorage.removeItem(key);
   } catch (error) {
-    console.warn('Не удалось удалить данные из localStorage', error);
+    console.warn('Failed to remove data from localStorage', error);
   }
 };

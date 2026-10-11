@@ -9,35 +9,35 @@ const renderInput = (onSend = vi.fn().mockResolvedValue(true)) => {
   return {
     onSend,
     user: userEvent.setup(),
-    input: screen.getByRole('textbox', { name: 'Сообщение' }),
-    button: screen.getByRole('button', { name: 'Отправить' }),
+    input: screen.getByRole('textbox', { name: 'Message' }),
+    button: screen.getByRole('button', { name: 'Send' }),
   };
 };
 
 describe('MessageInput', () => {
   beforeEach(() => {
-    useAppStore.setState({ locale: 'ru' });
+    useAppStore.setState({ locale: 'en' });
   });
 
-  it('по Enter отправляет текст без лишних пробелов и очищает поле', async () => {
+  it('sends trimmed text on Enter and clears the field', async () => {
     const { onSend, user, input } = renderInput();
 
-    await user.type(input, '  Привет  {Enter}');
+    await user.type(input, '  Hello  {Enter}');
 
-    expect(onSend).toHaveBeenCalledWith('Привет');
+    expect(onSend).toHaveBeenCalledWith('Hello');
     expect(input).toHaveValue('');
   });
 
-  it('Shift+Enter переносит строку, а не отправляет', async () => {
+  it('Shift+Enter adds a new line instead of sending', async () => {
     const { onSend, user, input } = renderInput();
 
-    await user.type(input, 'Первая{Shift>}{Enter}{/Shift}Вторая');
+    await user.type(input, 'First{Shift>}{Enter}{/Shift}Second');
 
     expect(onSend).not.toHaveBeenCalled();
-    expect(input).toHaveValue('Первая\nВторая');
+    expect(input).toHaveValue('First\nSecond');
   });
 
-  it('пустое сообщение отправить нельзя', async () => {
+  it('an empty message cannot be sent', async () => {
     const { onSend, user, input, button } = renderInput();
 
     await user.type(input, '   {Enter}');
@@ -46,12 +46,12 @@ describe('MessageInput', () => {
     expect(onSend).not.toHaveBeenCalled();
   });
 
-  it('отправляет по кнопке', async () => {
+  it('sends on button click', async () => {
     const { onSend, user, input, button } = renderInput();
 
-    await user.type(input, 'Привет');
+    await user.type(input, 'Hello');
     await user.click(button);
 
-    expect(onSend).toHaveBeenCalledWith('Привет');
+    expect(onSend).toHaveBeenCalledWith('Hello');
   });
 });

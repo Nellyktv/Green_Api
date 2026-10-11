@@ -13,8 +13,6 @@ const isAuthError = (error: unknown) =>
 
 const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
-// Получение сообщений через HTTP API: в цикле забираем уведомление из очереди,
-// обрабатываем, удаляем его и только потом берём следующее
 export const useNotifications = (credentials: Credentials) => {
   const addMessage = useChatStore((s) => s.addMessage);
 
@@ -33,12 +31,12 @@ export const useNotifications = (credentials: Credentials) => {
           await deleteNotification(credentials, notification.receiptId);
         } catch (error) {
           if (controller.signal.aborted) return;
-          // Токен отозван или неверный — повторять бессмысленно, возвращаем на экран входа
+          // The token is revoked or invalid — retrying is pointless, go back to the login screen
           if (isAuthError(error)) {
             useAuthStore.getState().logout();
             return;
           }
-          console.error('Не удалось получить уведомление', error);
+          console.error('Failed to receive notification', error);
           await wait(ERROR_RETRY_DELAY);
         }
       }
@@ -46,7 +44,6 @@ export const useNotifications = (credentials: Credentials) => {
 
     void poll();
 
-    // При выходе из аккаунта обрываем текущий запрос и останавливаем цикл
     return () => controller.abort();
   }, [credentials, addMessage]);
 };

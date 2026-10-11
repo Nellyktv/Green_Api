@@ -2,7 +2,6 @@ import type { HistoryMessage, Message } from '../types';
 
 const TEXT_TYPES = ['textMessage', 'extendedTextMessage'];
 
-// Из истории чата берём только текстовые сообщения и раскладываем их от старых к новым
 export const parseHistory = (history: HistoryMessage[]): Message[] =>
   history
     .filter((el) => TEXT_TYPES.includes(el.typeMessage))

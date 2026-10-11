@@ -6,7 +6,7 @@ type LoginField = {
   type?: 'text' | 'password';
 };
 
-// Подписи полей — это названия параметров GREEN-API, поэтому они одинаковые на всех языках
+// Field labels are GREEN-API parameter names, so they are the same in every language
 export const loginFields: LoginField[] = [
   { name: 'idInstance' },
   { name: 'apiTokenInstance', type: 'password' },

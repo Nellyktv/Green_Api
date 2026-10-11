@@ -12,7 +12,7 @@ export const CHAT_ID = '10000000';
 export const createMessage = (overrides: Partial<Message> = {}): Message => ({
   id: 'msg-1',
   chatId: CHAT_ID,
-  text: 'Привет',
+  text: 'Hello',
   type: 'incoming',
   timestamp: 1_700_000_000_000,
   ...overrides,
@@ -41,12 +41,12 @@ export const createHistoryMessage = (overrides: Partial<HistoryMessage> = {}): H
   timestamp: 1_700_000_000,
   typeMessage: 'textMessage',
   chatId: CHAT_ID,
-  textMessage: 'Сообщение из истории',
+  textMessage: 'Message from history',
   ...overrides,
 });
 
-// axios возвращает не только data, но в api-функциях используется только она
+// axios returns more than data, but the api functions only use data
 export const axiosResponse = <T>(data: T) => ({ data }) as AxiosResponse<T>;
 
-// Промис, который никогда не завершится — имитирует висящий long polling запрос
+// A promise that never settles — imitates a hanging long polling request
 export const pending = () => new Promise<never>(() => {});
