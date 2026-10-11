@@ -1,0 +1,8 @@
+.avatar {
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  flex-shrink: 0;
+  color: #fff;
+  font-size: calc(var(--avatar-size) * 0.38);
+  font-weight: 600;
+}

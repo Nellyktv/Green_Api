@@ -1,8 +1,5 @@
 import { createTheme } from '@mui/material';
 
-export const ACCENT_GRADIENT = 'linear-gradient(135deg, #6a5cff, #2fa8ff)';
-export const ACCENT_GRADIENT_HOVER = 'linear-gradient(135deg, #5a4cf0, #1f98f0)';
-
 export const theme = createTheme({
   palette: {
     mode: 'light',

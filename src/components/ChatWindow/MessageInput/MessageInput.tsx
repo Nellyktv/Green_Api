@@ -2,7 +2,6 @@ import { useState, type KeyboardEvent, type SubmitEvent } from 'react';
 import { CircularProgress, IconButton, InputBase } from '@mui/material';
 import SendRounded from '@mui/icons-material/SendRounded';
 import { useTranslation } from '../../../hooks/useTranslation';
-import { inputSx, sendButtonSx } from './MessageInput.style';
 import styles from './MessageInput.module.scss';
 
 const MAX_MESSAGE_LENGTH = 4096;
@@ -50,9 +49,9 @@ export const MessageInput = ({ onSend }: Props) => {
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
         slotProps={{ input: { maxLength: MAX_MESSAGE_LENGTH, 'aria-label': t.chat.placeholder } }}
-        sx={inputSx}
+        className={styles.input}
       />
-      <IconButton type='submit' disabled={!canSend} aria-label={t.chat.send} sx={sendButtonSx}>
+      <IconButton type='submit' disabled={!canSend} aria-label={t.chat.send} className={styles.sendButton}>
         {sending ? <CircularProgress size={20} color='inherit' /> : <SendRounded />}
       </IconButton>
     </form>

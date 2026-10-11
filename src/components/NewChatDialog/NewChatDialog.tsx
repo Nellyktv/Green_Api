@@ -3,6 +3,7 @@ import { Button, Dialog, DialogActions, DialogContent, DialogTitle, TextField } 
 import { useCreateChat } from '../../hooks/useCreateChat';
 import { useTranslation } from '../../hooks/useTranslation';
 import type { Credentials } from '../../types';
+import styles from './NewChatDialog.module.scss';
 
 interface Props {
   open: boolean;
@@ -44,7 +45,7 @@ export const NewChatDialog = ({ open, credentials, onClose }: Props) => {
             helperText={error || t.newChat.hint}
           />
         </DialogContent>
-        <DialogActions sx={{ px: 3, pb: 2 }}>
+        <DialogActions className={styles.actions}>
           <Button onClick={handleClose}>{t.newChat.cancel}</Button>
           <Button type='submit' variant='contained' loading={loading} disabled={!value.trim()}>
             {t.newChat.submit}

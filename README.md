@@ -38,7 +38,7 @@
 ```
 src/
 ├── api/            client.ts — axios, greenApi.ts — методы GREEN-API
-├── components/     компонент = папка: Component.tsx, *.style.ts (sx), *.module.scss, *Data.ts
+├── components/     компонент = папка: Component.tsx, *.module.scss (все стили), *Data.ts
 │   ├── LoginPage/
 │   ├── ChatPage/        раскладка: список чатов + открытый чат
 │   ├── Sidebar/         список чатов, ChatListItem/
@@ -49,7 +49,7 @@ src/
 ├── store/          useAuthStore, useChatStore, useAppStore (язык)
 ├── lib/            чистые функции: разбор уведомлений, истории, номера телефона и т.д.
 ├── i18n/           ru.ts, en.ts
-├── styles/         _variables.scss
+├── styles/         _variables.scss — общие переменные для SCSS-модулей
 ├── test/           настройка тестов и общие тестовые данные
 └── types.ts
 ```

@@ -1,0 +1,10 @@
+.group {
+  flex-shrink: 0;
+
+  :global(.MuiToggleButton-root) {
+    padding: 2px 8px;
+    font-size: 12px;
+    font-weight: 600;
+    line-height: 1.6;
+  }
+}

@@ -12,3 +12,9 @@
 .outgoing {
   justify-content: flex-end;
 }
+
+.bubble {
+  max-width: 360px;
+  border-radius: 48px;
+  background: rgba(255, 255, 255, 0.7);
+}

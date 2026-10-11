@@ -1,5 +1,20 @@
 @use '../../../styles/variables' as *;
 
+.item {
+  gap: 12px;
+  margin: 0 8px;
+  padding: 8px 12px;
+  border-radius: 36px;
+
+  &:global(.Mui-selected) {
+    background: rgba($primary, 0.1);
+  }
+
+  &:global(.Mui-selected):hover {
+    background: rgba($primary, 0.14);
+  }
+}
+
 .info {
   flex-grow: 1;
   min-width: 0;

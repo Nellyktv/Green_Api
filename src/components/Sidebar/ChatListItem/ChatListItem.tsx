@@ -4,7 +4,6 @@ import { formatTime } from '../../../lib/formatTime';
 import { useAppStore } from '../../../store/useAppStore';
 import type { Chat, Message } from '../../../types';
 import { ChatAvatar } from '../../ChatAvatar/ChatAvatar';
-import { chatItemSx } from './ChatListItem.style';
 import styles from './ChatListItem.module.scss';
 
 interface Props {
@@ -24,7 +23,7 @@ export const ChatListItem = ({ chat, lastMessage, active, onSelect }: Props) => 
   };
 
   return (
-    <ListItemButton selected={active} onClick={() => onSelect(chat.chatId)} sx={chatItemSx}>
+    <ListItemButton selected={active} onClick={() => onSelect(chat.chatId)} className={styles.item}>
       <ChatAvatar chatId={chat.chatId} name={chat.name} />
       <div className={styles.info}>
         <div className={styles.row}>
