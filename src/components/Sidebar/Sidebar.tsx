@@ -21,14 +21,8 @@ export const Sidebar = ({ credentials }: Props) => {
   const messages = useChatStore((s) => s.messages);
   const activeChatId = useChatStore((s) => s.activeChatId);
   const selectChat = useChatStore((s) => s.selectChat);
-  const reset = useChatStore((s) => s.reset);
   const logout = useAuthStore((s) => s.logout);
   const t = useTranslation();
-
-  const handleLogout = () => {
-    reset();
-    logout();
-  };
 
   return (
     <aside className={styles.sidebar}>
@@ -46,7 +40,7 @@ export const Sidebar = ({ credentials }: Props) => {
           </IconButton>
         </Tooltip>
         <Tooltip title={t.sidebar.logout}>
-          <IconButton onClick={handleLogout} aria-label={t.sidebar.logout}>
+          <IconButton onClick={logout} aria-label={t.sidebar.logout}>
             <LogoutRounded />
           </IconButton>
         </Tooltip>

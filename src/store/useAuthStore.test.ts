@@ -1,6 +1,7 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { credentials } from '../test/fixtures';
+import { CHAT_ID, credentials } from '../test/fixtures';
 import { useAuthStore } from './useAuthStore';
+import { useChatStore } from './useChatStore';
 
 describe('useAuthStore', () => {
   beforeEach(() => {
@@ -15,6 +16,15 @@ describe('useAuthStore', () => {
     useAuthStore.getState().logout();
     expect(useAuthStore.getState().credentials).toBeNull();
     expect(localStorage.getItem('credentials')).toBeNull();
+  });
+
+  it('logout очищает и переписку', () => {
+    useChatStore.getState().openChat({ chatId: CHAT_ID, name: 'Vasilisa' });
+
+    useAuthStore.getState().logout();
+
+    expect(useChatStore.getState().chats).toEqual([]);
+    expect(useChatStore.getState().activeChatId).toBeNull();
   });
 
   it('после перезагрузки страницы пользователь остаётся в аккаунте', async () => {
