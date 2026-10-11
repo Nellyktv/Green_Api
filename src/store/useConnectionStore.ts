@@ -8,5 +8,5 @@ type ConnectionStore = {
 export const useConnectionStore = create<ConnectionStore>((set) => ({
   online: true,
 
-  setOnline: (online) => set({ online }),
+  setOnline: (online) => set((state) => (state.online === online ? state : { online })),
 }));

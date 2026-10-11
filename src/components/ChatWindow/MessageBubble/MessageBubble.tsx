@@ -1,3 +1,4 @@
+import { memo } from 'react';
 import { Box, Typography } from '@mui/material';
 import { formatTime } from '../../../lib/formatTime';
 import { useAppStore } from '../../../store/useAppStore';
@@ -8,7 +9,7 @@ interface Props {
   message: Message;
 }
 
-export const MessageBubble = ({ message }: Props) => {
+export const MessageBubble = memo(function MessageBubble({ message }: Props) {
   const locale = useAppStore((s) => s.locale);
   const outgoing = message.type === 'outgoing';
 
@@ -37,4 +38,4 @@ export const MessageBubble = ({ message }: Props) => {
       </Box>
     </Box>
   );
-};
+});
