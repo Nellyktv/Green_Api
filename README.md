@@ -80,24 +80,24 @@ GREEN-API складывает входящие события в очередь
 Нужен Node.js 22.12+.
 
 ```bash
-npm install
-npm run dev
+pnpm install
+pnpm dev
 ```
 
-Приложение откроется на http://localhost:5173. Бэкенд не нужен: GREEN-API разрешает запросы из браузера (CORS).
+Приложение откроется на http://localhost:5173. Бэкенд не нужен: GREEN-API разрешает запросы из браузера (CORS). Из-за этого `apiTokenInstance` хранится в `localStorage` браузера — для тестового задания это сознательное допущение, в продакшене токен стоит прятать за своим сервером.
 
 Другие команды:
 
 ```bash
-npm test          # тесты
-npm run lint      # ESLint
-npm run build     # production-сборка в dist/
-npm run preview   # посмотреть сборку локально
+pnpm test         # тесты
+pnpm lint         # ESLint
+pnpm build        # production-сборка в dist/
+pnpm preview      # посмотреть сборку локально
 ```
 
 ## Тесты
 
-55 тестов на Vitest + Testing Library:
+57 тестов на Vitest + Testing Library:
 
 - `lib/` — разбор номера телефона, уведомлений и истории;
 - `api/` — правильные адреса и тела запросов к GREEN-API;
@@ -107,4 +107,4 @@ npm run preview   # посмотреть сборку локально
 
 ## Деплой
 
-Это статический сайт: собрать `npm run build` и выложить папку `dist` на любой хостинг (Vercel, Netlify, GitHub Pages). Для Vercel/Netlify достаточно импортировать репозиторий — настройки Vite подхватятся сами.
+Это статический сайт: собрать `pnpm build` и выложить папку `dist` на любой хостинг (Vercel, Netlify, GitHub Pages). Для Vercel/Netlify достаточно импортировать репозиторий — настройки Vite подхватятся сами.
