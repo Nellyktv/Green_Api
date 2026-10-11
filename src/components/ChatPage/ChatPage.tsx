@@ -2,6 +2,7 @@ import { Box, useMediaQuery, type Theme } from '@mui/material';
 import { useNotifications } from '../../hooks/useNotifications';
 import { useChatStore } from '../../store/useChatStore';
 import type { Credentials } from '../../types';
+import { ConnectionBanner } from '../ConnectionBanner/ConnectionBanner';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { ChatWindow } from '../ChatWindow/ChatWindow';
 import { EmptyChat } from '../EmptyChat/EmptyChat';
@@ -24,22 +25,25 @@ export const ChatPage = ({ credentials }: Props) => {
   const showChat = !isMobile || Boolean(activeChat);
 
   return (
-    <Box sx={{ display: 'flex', height: '100dvh', overflow: 'hidden', bgcolor: 'background.default' }}>
-      {showSidebar && <Sidebar credentials={credentials} />}
-      {showChat && (
-        <Box component='main' sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
-          {activeChat ? (
-            <ChatWindow
-              key={activeChat.chatId}
-              chat={activeChat}
-              credentials={credentials}
-              onBack={isMobile ? () => selectChat(null) : undefined}
-            />
-          ) : (
-            <EmptyChat />
-          )}
-        </Box>
-      )}
+    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100dvh', overflow: 'hidden', bgcolor: 'background.default' }}>
+      <ConnectionBanner />
+      <Box sx={{ display: 'flex', flex: 1, minHeight: 0 }}>
+        {showSidebar && <Sidebar credentials={credentials} />}
+        {showChat && (
+          <Box component='main' sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+            {activeChat ? (
+              <ChatWindow
+                key={activeChat.chatId}
+                chat={activeChat}
+                credentials={credentials}
+                onBack={isMobile ? () => selectChat(null) : undefined}
+              />
+            ) : (
+              <EmptyChat />
+            )}
+          </Box>
+        )}
+      </Box>
     </Box>
   );
 };

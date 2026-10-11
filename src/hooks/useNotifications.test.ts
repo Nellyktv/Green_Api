@@ -4,6 +4,7 @@ import { AxiosError, type AxiosResponse } from 'axios';
 import { deleteNotification, receiveNotification } from '../api/greenApi';
 import { useAuthStore } from '../store/useAuthStore';
 import { useChatStore } from '../store/useChatStore';
+import { useConnectionStore } from '../store/useConnectionStore';
 import { CHAT_ID, createNotificationBody, credentials, pending } from '../test/fixtures';
 import { ERROR_RETRY_DELAY, useNotifications } from './useNotifications';
 
@@ -18,6 +19,7 @@ describe('useNotifications', () => {
     vi.mocked(deleteNotification).mockResolvedValue({ result: true });
     vi.spyOn(console, 'error').mockImplementation(() => {});
     useChatStore.setState({ chats: [], messages: {}, activeChatId: null });
+    useConnectionStore.setState({ online: true });
   });
 
   afterEach(() => {
@@ -68,6 +70,31 @@ describe('useNotifications', () => {
 
     await vi.advanceTimersByTimeAsync(1);
     expect(receiveNotification).toHaveBeenCalledTimes(2);
+  });
+
+  it('goes offline after a failure and back online after the next successful poll', async () => {
+    vi.useFakeTimers();
+    vi.mocked(receiveNotification).mockRejectedValueOnce(new Error('Network Error')).mockResolvedValueOnce(null).mockImplementation(pending);
+
+    renderHook(() => useNotifications(credentials));
+
+    await vi.advanceTimersByTimeAsync(0);
+    expect(useConnectionStore.getState().online).toBe(false);
+
+    await vi.advanceTimersByTimeAsync(ERROR_RETRY_DELAY);
+    expect(useConnectionStore.getState().online).toBe(true);
+  });
+
+  it('resets the connection state to online on unmount', async () => {
+    vi.useFakeTimers();
+    vi.mocked(receiveNotification).mockRejectedValue(new Error('Network Error'));
+
+    const { unmount } = renderHook(() => useNotifications(credentials));
+    await vi.advanceTimersByTimeAsync(0);
+    expect(useConnectionStore.getState().online).toBe(false);
+
+    unmount();
+    expect(useConnectionStore.getState().online).toBe(true);
   });
 
   it('logs out and stops polling when the token is invalid', async () => {

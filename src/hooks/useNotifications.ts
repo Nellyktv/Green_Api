@@ -4,6 +4,7 @@ import { deleteNotification, receiveNotification } from '../api/greenApi';
 import { parseNotification } from '../lib/notification';
 import { useAuthStore } from '../store/useAuthStore';
 import { useChatStore } from '../store/useChatStore';
+import { useConnectionStore } from '../store/useConnectionStore';
 import type { Credentials } from '../types';
 
 export const ERROR_RETRY_DELAY = 5000;
@@ -15,6 +16,7 @@ const wait = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
 
 export const useNotifications = (credentials: Credentials) => {
   const addMessage = useChatStore((s) => s.addMessage);
+  const setOnline = useConnectionStore((s) => s.setOnline);
 
   useEffect(() => {
     const controller = new AbortController();
@@ -23,6 +25,7 @@ export const useNotifications = (credentials: Credentials) => {
       while (!controller.signal.aborted) {
         try {
           const notification = await receiveNotification(credentials, controller.signal);
+          setOnline(true);
           if (!notification) continue;
 
           const parsed = parseNotification(notification.body);
@@ -37,6 +40,7 @@ export const useNotifications = (credentials: Credentials) => {
             return;
           }
           console.error('Failed to receive notification', error);
+          setOnline(false);
           await wait(ERROR_RETRY_DELAY);
         }
       }
@@ -44,6 +48,9 @@ export const useNotifications = (credentials: Credentials) => {
 
     void poll();
 
-    return () => controller.abort();
-  }, [credentials, addMessage]);
+    return () => {
+      controller.abort();
+      setOnline(true);
+    };
+  }, [credentials, addMessage, setOnline]);
 };
