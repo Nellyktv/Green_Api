@@ -25,8 +25,6 @@ export const ChatPage = ({ credentials }: Props) => {
   const showSidebar = !isMobile || !activeChat;
   const showChat = !isMobile || Boolean(activeChat);
 
-  const handleBack = () => selectChat(null);
-
   return (
     <div className={styles.page}>
       {showSidebar && <Sidebar credentials={credentials} />}
@@ -37,7 +35,7 @@ export const ChatPage = ({ credentials }: Props) => {
               key={activeChat.chatId}
               chat={activeChat}
               credentials={credentials}
-              onBack={isMobile ? handleBack : undefined}
+              onBack={isMobile ? () => selectChat(null) : undefined}
             />
           ) : (
             <EmptyChat />

@@ -25,7 +25,7 @@ export const LanguageSwitch = () => {
       sx={toggleGroupSx}
     >
       {languages.map((el) => (
-        <ToggleButton key={el.id} value={el.value}>
+        <ToggleButton key={el.value} value={el.value}>
           {el.label}
         </ToggleButton>
       ))}
