@@ -8,6 +8,9 @@ export const chat = {
   bubbleOut: '#dde6ff',
   accentGradient: 'linear-gradient(135deg, #6a5cff, #2fa8ff)',
   accentGradientHover: 'linear-gradient(135deg, #5a4cf0, #1f98f0)',
+  loginBackdrop: 'linear-gradient(160deg, #a9c8ff, #8fd3e8)',
+  loginCard: 'rgba(255, 255, 255, 0.72)',
+  loginCardShadow: '0 12px 40px rgba(40, 90, 140, 0.18)',
 };
 
 // Message area background — light with a dotted pattern, like web.max.ru

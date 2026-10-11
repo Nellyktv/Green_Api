@@ -1,6 +1,24 @@
 import { useState, type ChangeEvent, type SubmitEvent } from 'react';
-import { Alert, Avatar, Box, Button, Link, Paper, Stack, TextField, Typography } from '@mui/material';
+import {
+  Alert,
+  Avatar,
+  Box,
+  Button,
+  Collapse,
+  IconButton,
+  InputAdornment,
+  Link,
+  Paper,
+  Stack,
+  TextField,
+  Typography,
+} from '@mui/material';
 import ChatBubbleRounded from '@mui/icons-material/ChatBubbleRounded';
+import ExpandLessRounded from '@mui/icons-material/ExpandLessRounded';
+import ExpandMoreRounded from '@mui/icons-material/ExpandMoreRounded';
+import HelpOutlineRounded from '@mui/icons-material/HelpOutlineRounded';
+import VisibilityOffRounded from '@mui/icons-material/VisibilityOffRounded';
+import VisibilityRounded from '@mui/icons-material/VisibilityRounded';
 import { useLogin } from '../../hooks/useLogin';
 import { useTranslation } from '../../hooks/useTranslation';
 import { chat } from '../../theme';
@@ -10,10 +28,14 @@ import { CONSOLE_URL, initialForm, loginFields } from './loginPageData';
 
 export const LoginPage = () => {
   const [form, setForm] = useState<Credentials>(initialForm);
+  const [showToken, setShowToken] = useState(false);
+  // null = the user has not touched the toggle, so the section follows the login error
+  const [advancedToggle, setAdvancedToggle] = useState<boolean | null>(null);
   const { submit, loading, error } = useLogin();
   const t = useTranslation();
 
-  const canSubmit = loginFields.every((el) => form[el.name].trim() !== '');
+  const canSubmit = loginFields.every((name) => form[name].trim() !== '');
+  const advancedOpen = advancedToggle ?? Boolean(error);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
@@ -21,6 +43,8 @@ export const LoginPage = () => {
 
   const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    // Let a new failed attempt re-open the section even if the user collapsed it earlier
+    setAdvancedToggle(null);
     void submit(form);
   };
 
@@ -32,53 +56,115 @@ export const LoginPage = () => {
         alignItems: { xs: 'flex-start', md: 'center' },
         justifyContent: 'center',
         p: { xs: 0, md: 2 },
-        bgcolor: { xs: 'background.paper', md: 'background.default' },
+        bgcolor: 'background.paper',
+        background: { md: chat.loginBackdrop },
       }}
     >
       <Paper
         component='form'
-        variant='outlined'
+        elevation={0}
         onSubmit={handleSubmit}
         sx={{
+          position: 'relative',
           display: 'flex',
           flexDirection: 'column',
+          alignItems: 'center',
           gap: 2,
           width: '100%',
           maxWidth: { md: 420 },
           p: { xs: '24px 16px', md: '32px 28px' },
-          borderWidth: { xs: 0, md: 1 },
-          borderRadius: { xs: 0, md: 2 },
+          bgcolor: { xs: 'background.paper', md: chat.loginCard },
+          backdropFilter: { md: 'blur(16px)' },
+          boxShadow: { xs: 'none', md: chat.loginCardShadow },
+          borderRadius: { xs: 0, md: '28px' },
         }}
       >
-        <Stack direction='row' sx={{ alignItems: 'center', gap: 1.5, mb: 1 }}>
-          <Avatar variant='rounded' sx={{ width: 48, height: 48, background: chat.accentGradient }}>
-            <ChatBubbleRounded />
-          </Avatar>
-          <Box sx={{ flexGrow: 1, minWidth: 0 }}>
-            <Typography variant='h6'>GREEN-API Chat</Typography>
-            <Typography variant='caption'>
-              {t.login.subtitle}
-            </Typography>
-          </Box>
+        <Box sx={{ position: 'absolute', top: 12, left: 12 }}>
           <LanguageSwitch />
+        </Box>
+        <IconButton
+          aria-label={t.login.help}
+          href={CONSOLE_URL}
+          target='_blank'
+          rel='noreferrer'
+          sx={{ position: 'absolute', top: 12, right: 12 }}
+        >
+          <HelpOutlineRounded />
+        </IconButton>
+
+        <Stack sx={{ alignItems: 'center', gap: 0.5, mt: 4, mb: 1, textAlign: 'center' }}>
+          <Avatar variant='rounded' sx={{ width: 64, height: 64, mb: 1, background: chat.accentGradient }}>
+            <ChatBubbleRounded fontSize='large' />
+          </Avatar>
+          <Typography variant='h6'>{t.login.title}</Typography>
+          <Typography variant='caption'>GREEN-API Chat</Typography>
+          <Typography variant='caption'>{t.login.subtitle}</Typography>
         </Stack>
 
-        {loginFields.map((el) => (
-          <TextField
-            key={el.name}
-            name={el.name}
-            label={el.name}
-            type={el.type}
-            helperText={t.login.hints[el.name]}
-            value={form[el.name]}
-            onChange={handleChange}
-            autoComplete='off'
-          />
-        ))}
+        <TextField
+          name='idInstance'
+          label='idInstance'
+          value={form.idInstance}
+          onChange={handleChange}
+          autoComplete='off'
+        />
+        <TextField
+          name='apiTokenInstance'
+          label='apiTokenInstance'
+          type={showToken ? 'text' : 'password'}
+          value={form.apiTokenInstance}
+          onChange={handleChange}
+          autoComplete='off'
+          slotProps={{
+            input: {
+              endAdornment: (
+                <InputAdornment position='end'>
+                  <IconButton
+                    edge='end'
+                    aria-label={showToken ? t.login.hideToken : t.login.showToken}
+                    onClick={() => setShowToken(!showToken)}
+                  >
+                    {showToken ? <VisibilityOffRounded /> : <VisibilityRounded />}
+                  </IconButton>
+                </InputAdornment>
+              ),
+            },
+          }}
+        />
 
-        {error && <Alert severity='error'>{error}</Alert>}
+        <Box sx={{ width: '100%' }}>
+          <Button
+            size='small'
+            aria-expanded={advancedOpen}
+            endIcon={advancedOpen ? <ExpandLessRounded /> : <ExpandMoreRounded />}
+            onClick={() => setAdvancedToggle(!advancedOpen)}
+          >
+            {t.login.advanced}
+          </Button>
+          <Collapse in={advancedOpen}>
+            <Box sx={{ pt: 1 }}>
+              <TextField
+                name='apiUrl'
+                label='apiUrl'
+                helperText={t.login.hints.apiUrl}
+                value={form.apiUrl}
+                onChange={handleChange}
+                autoComplete='off'
+              />
+            </Box>
+          </Collapse>
+        </Box>
 
-        <Button type='submit' variant='contained' size='large' loading={loading} disabled={!canSubmit}>
+        {error && <Alert severity='error' sx={{ width: '100%' }}>{error}</Alert>}
+
+        <Button
+          type='submit'
+          variant='contained'
+          size='large'
+          loading={loading}
+          disabled={!canSubmit}
+          sx={{ width: '100%' }}
+        >
           {t.login.submit}
         </Button>
 

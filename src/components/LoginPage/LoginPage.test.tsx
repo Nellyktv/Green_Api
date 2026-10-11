@@ -68,6 +68,44 @@ describe('LoginPage', () => {
     expect(useAuthStore.getState().credentials).toBeNull();
   });
 
+  it('toggles token visibility', async () => {
+    const user = userEvent.setup();
+    render(<LoginPage />);
+    expect(screen.getByLabelText('apiTokenInstance')).toHaveAttribute('type', 'password');
+
+    await user.click(screen.getByRole('button', { name: 'Show token' }));
+    expect(screen.getByLabelText('apiTokenInstance')).toHaveAttribute('type', 'text');
+
+    await user.click(screen.getByRole('button', { name: 'Hide token' }));
+    expect(screen.getByLabelText('apiTokenInstance')).toHaveAttribute('type', 'password');
+  });
+
+  it('keeps apiUrl in a collapsed Advanced section that can be toggled', async () => {
+    const user = userEvent.setup();
+    render(<LoginPage />);
+    const toggle = screen.getByRole('button', { name: 'Advanced' });
+    expect(toggle).toHaveAttribute('aria-expanded', 'false');
+    expect(screen.getByLabelText('apiUrl')).not.toBeVisible();
+
+    await user.click(toggle);
+    expect(toggle).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByLabelText('apiUrl')).toBeVisible();
+    expect(screen.getByLabelText('apiUrl')).toHaveValue(DEFAULT_API_URL);
+  });
+
+  it('expands the Advanced section when the login fails', async () => {
+    vi.mocked(getStateInstance).mockRejectedValue(new Error('Request failed with status code 401'));
+    render(<LoginPage />);
+    expect(screen.getByLabelText('apiUrl')).not.toBeVisible();
+
+    const user = await fillForm();
+    await user.click(screen.getByRole('button', { name: 'Sign in' }));
+
+    await screen.findByRole('alert');
+    expect(screen.getByRole('button', { name: 'Advanced' })).toHaveAttribute('aria-expanded', 'true');
+    expect(screen.getByLabelText('apiUrl')).toBeVisible();
+  });
+
   it('switches the interface language', async () => {
     const user = userEvent.setup();
     render(<LoginPage />);
