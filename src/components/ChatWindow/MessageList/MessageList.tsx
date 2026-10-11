@@ -46,14 +46,18 @@ export const MessageList = ({ messages, loading }: Props) => {
     // The skeleton is only needed while there is nothing to show. If messages already exist, history loads silently
     if (messages.length === 0 && loading) return <MessageSkeleton />;
     if (messages.length === 0) return <ChatNotice>{t.chat.empty}</ChatNotice>;
-    return messages.map((el, i) => (
-      <Fragment key={el.id}>
-        {(i === 0 || getDayKey(messages[i - 1].timestamp) !== getDayKey(el.timestamp)) && (
-          <DateDivider label={formatDayLabel(el.timestamp, locale, t.chat)} />
-        )}
-        <MessageBubble message={el} />
-      </Fragment>
-    ));
+    let prevDay = '';
+    return messages.map((el) => {
+      const day = getDayKey(el.timestamp);
+      const newDay = day !== prevDay;
+      prevDay = day;
+      return (
+        <Fragment key={el.id}>
+          {newDay && <DateDivider label={formatDayLabel(el.timestamp, locale)} />}
+          <MessageBubble message={el} />
+        </Fragment>
+      );
+    });
   };
 
   return (

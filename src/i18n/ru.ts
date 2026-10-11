@@ -37,8 +37,6 @@ export const ru = {
     placeholder: 'Сообщение',
     send: 'Отправить',
     back: 'Назад',
-    today: 'Сегодня',
-    yesterday: 'Вчера',
   },
   status: {
     offline: 'Нет связи. Пробуем снова…',

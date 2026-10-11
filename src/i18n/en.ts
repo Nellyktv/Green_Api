@@ -37,8 +37,6 @@ export const en: Translation = {
     placeholder: 'Message',
     send: 'Send',
     back: 'Back',
-    today: 'Today',
-    yesterday: 'Yesterday',
   },
   status: {
     offline: 'No connection. Retrying…',
