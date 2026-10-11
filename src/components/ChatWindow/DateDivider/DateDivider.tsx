@@ -1,13 +1,10 @@
 import { Chip } from '@mui/material';
+import { chat } from '../../../theme';
 
 interface Props {
   label: string;
 }
 
 export const DateDivider = ({ label }: Props) => (
-  <Chip
-    label={label}
-    size="small"
-    sx={{ alignSelf: 'center', bgcolor: 'rgba(255, 255, 255, 0.8)', color: 'text.secondary', fontWeight: 500 }}
-  />
+  <Chip label={label} size='small' sx={{ alignSelf: 'center', bgcolor: chat.dividerBg, color: 'text.secondary' }} />
 );

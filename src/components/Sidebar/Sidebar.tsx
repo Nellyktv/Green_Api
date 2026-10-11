@@ -5,11 +5,12 @@ import LogoutRounded from '@mui/icons-material/LogoutRounded';
 import { useTranslation } from '../../hooks/useTranslation';
 import { useAuthStore } from '../../store/useAuthStore';
 import { useChatStore } from '../../store/useChatStore';
-import { chat } from '../../theme';
 import type { Credentials } from '../../types';
 import { LanguageSwitch } from '../LanguageSwitch/LanguageSwitch';
 import { NewChatDialog } from '../NewChatDialog/NewChatDialog';
 import { ChatListItem } from './ChatListItem/ChatListItem';
+
+const SIDEBAR_WIDTH = 360;
 
 interface Props {
   credentials: Credentials;
@@ -28,7 +29,7 @@ export const Sidebar = ({ credentials }: Props) => {
     <Stack
       component='aside'
       sx={{
-        width: { xs: '100%', md: chat.sidebarWidth },
+        width: { xs: '100%', md: SIDEBAR_WIDTH },
         flexShrink: 0,
         bgcolor: 'background.paper',
         borderRight: 1,

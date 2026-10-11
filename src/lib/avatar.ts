@@ -1,7 +1,7 @@
-import { chat } from '../theme';
+import { accentGradient } from '../tokens';
 
 const AVATAR_GRADIENTS = [
-  chat.accentGradient,
+  accentGradient,
   'linear-gradient(135deg, #ff7a59, #ff4f8b)',
   'linear-gradient(135deg, #22c197, #1aa1d6)',
   'linear-gradient(135deg, #ffb340, #ff7849)',

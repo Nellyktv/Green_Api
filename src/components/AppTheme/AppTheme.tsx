@@ -4,7 +4,7 @@ import { theme } from '../../theme';
 
 type AppThemeProps = { children: ReactNode };
 
-export const AppTheme = ({ children }: AppThemeProps) => {
+const AppTheme = ({ children }: AppThemeProps) => {
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
