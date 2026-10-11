@@ -1,0 +1,78 @@
+@use '../../styles/variables' as *;
+
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 16px;
+  background: $bg;
+
+  @media (max-width: $mobile) {
+    align-items: flex-start;
+    padding: 0;
+    background: $surface;
+  }
+}
+
+.card {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  padding: 32px 28px;
+  background: $surface;
+  border: 1px solid $border;
+  border-radius: 20px;
+
+  @media (max-width: $mobile) {
+    max-width: none;
+    padding: 24px 16px;
+    border: none;
+    border-radius: 0;
+  }
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.brandText {
+  flex-grow: 1;
+  min-width: 0;
+}
+
+.logo {
+  width: 48px;
+  height: 48px;
+  flex-shrink: 0;
+  border-radius: 14px;
+  background: $accent-gradient;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #fff;
+}
+
+.title {
+  font-size: 20px;
+  font-weight: 700;
+  color: $text;
+  line-height: 1.2;
+}
+
+.subtitle {
+  font-size: 13px;
+  color: $text-dim;
+}
+
+.hint {
+  font-size: 13px;
+  color: $text-dim;
+  text-align: center;
+}
