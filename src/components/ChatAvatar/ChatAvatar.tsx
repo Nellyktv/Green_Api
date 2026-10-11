@@ -19,7 +19,6 @@ export const ChatAvatar = ({ chatId, name, size = 48 }: Props) => {
         flexShrink: 0,
         background: getAvatarGradient(chatId),
         color: 'common.white',
-        fontSize: Math.round(size * 0.38),
         fontWeight: 600,
       }}
     >

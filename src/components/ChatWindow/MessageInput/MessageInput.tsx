@@ -1,8 +1,7 @@
 import { useState, type KeyboardEvent, type SubmitEvent } from 'react';
-import { CircularProgress, IconButton, InputBase, Stack } from '@mui/material';
+import { CircularProgress, Fab, InputBase, Stack } from '@mui/material';
 import SendRounded from '@mui/icons-material/SendRounded';
 import { useTranslation } from '../../../hooks/useTranslation';
-import { chat } from '../../../theme';
 
 const MAX_MESSAGE_LENGTH = 4096;
 
@@ -71,22 +70,9 @@ export const MessageInput = ({ onSend }: Props) => {
           fontSize: { xs: 16, md: 15 },
         }}
       />
-      <IconButton
-        type='submit'
-        disabled={!canSend}
-        aria-label={t.chat.send}
-        sx={{
-          width: 44,
-          height: 44,
-          flexShrink: 0,
-          color: 'common.white',
-          background: chat.accentGradient,
-          '&:hover': { background: chat.accentGradientHover },
-          '&.Mui-disabled': { color: 'common.white', background: chat.accentGradient, opacity: 0.45 },
-        }}
-      >
+      <Fab type='submit' size='medium' color='primary' disabled={!canSend} aria-label={t.chat.send}>
         {sending ? <CircularProgress size={20} color='inherit' /> : <SendRounded />}
-      </IconButton>
+      </Fab>
     </Stack>
   );
 };

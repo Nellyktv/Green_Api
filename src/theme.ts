@@ -1,12 +1,11 @@
 import { createTheme } from '@mui/material';
-import { accentGradient, accentGradientHover } from './tokens';
+import { accentGradient } from './tokens';
 
 // Chat-specific colors that have no slot in the MUI palette
 export const chat = {
   bubbleIn: '#ffffff',
   bubbleOut: '#dde6ff',
   accentGradient,
-  accentGradientHover,
   noticeBg: 'rgba(0, 0, 0, 0.35)',
   dividerBg: 'rgba(255, 255, 255, 0.8)',
   loginBackdrop: 'linear-gradient(160deg, #a9c8ff, #8fd3e8)',
@@ -44,6 +43,7 @@ export const theme = createTheme({
   components: {
     MuiTextField: { defaultProps: { fullWidth: true } },
     MuiChip: { styleOverrides: { root: { fontWeight: 500 } } },
+    MuiFab: { styleOverrides: { root: { boxShadow: 'none', '&:active': { boxShadow: 'none' } } } },
     MuiDialogActions: { styleOverrides: { root: { padding: '8px 24px 16px' } } },
     MuiListItemButton: {
       styleOverrides: { root: { gap: 12, margin: '0 8px', padding: '8px 12px', borderRadius: 36 } },
