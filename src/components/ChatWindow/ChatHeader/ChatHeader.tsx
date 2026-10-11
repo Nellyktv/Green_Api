@@ -1,4 +1,4 @@
-import { Box, IconButton, Stack, Typography } from '@mui/material';
+import { IconButton, Stack, Typography } from '@mui/material';
 import ArrowBackRounded from '@mui/icons-material/ArrowBackRounded';
 import { useTranslation } from '../../../hooks/useTranslation';
 import type { Chat } from '../../../types';
@@ -33,14 +33,9 @@ export const ChatHeader = ({ chat, onBack }: Props) => {
         </IconButton>
       )}
       <ChatAvatar chatId={chat.chatId} name={chat.name} size={40} />
-      <Box sx={{ minWidth: 0 }}>
-        <Typography variant='subtitle1' component='div' noWrap>
-          {chat.name}
-        </Typography>
-        <Typography variant='caption'>
-          Telegram
-        </Typography>
-      </Box>
+      <Typography variant='subtitle1' component='div' noWrap>
+        {chat.name}
+      </Typography>
     </Stack>
   );
 };

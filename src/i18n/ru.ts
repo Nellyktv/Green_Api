@@ -9,6 +9,11 @@ export const ru = {
     } as Partial<Record<keyof Credentials, string>>,
     consoleHint: 'Данные инстанса есть в',
     consoleLink: 'личном кабинете GREEN-API',
+    title: 'Вход по данным инстанса',
+    help: 'Где взять данные',
+    advanced: 'Дополнительно',
+    showToken: 'Показать токен',
+    hideToken: 'Скрыть токен',
   },
   sidebar: {
     title: 'Чаты',
@@ -32,6 +37,11 @@ export const ru = {
     placeholder: 'Сообщение',
     send: 'Отправить',
     back: 'Назад',
+    today: 'Сегодня',
+    yesterday: 'Вчера',
+  },
+  status: {
+    offline: 'Нет связи. Пробуем снова…',
   },
   errors: {
     notAuthorized: (status: string) =>

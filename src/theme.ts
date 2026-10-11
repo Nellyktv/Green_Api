@@ -17,7 +17,7 @@ export const chatBackgroundSx = {
   backgroundSize: '18px 18px',
 };
 
-const textSecondary = 'rgba(0,0,0,0.5)';
+const textSecondary = 'rgba(0,0,0,0.6)';
 
 export const theme = createTheme({
   palette: {

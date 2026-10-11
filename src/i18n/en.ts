@@ -9,6 +9,11 @@ export const en: Translation = {
     },
     consoleHint: 'You can find the instance data in the',
     consoleLink: 'GREEN-API console',
+    title: 'Sign in with your instance',
+    help: 'Where to find the data',
+    advanced: 'Advanced',
+    showToken: 'Show token',
+    hideToken: 'Hide token',
   },
   sidebar: {
     title: 'Chats',
@@ -32,6 +37,11 @@ export const en: Translation = {
     placeholder: 'Message',
     send: 'Send',
     back: 'Back',
+    today: 'Today',
+    yesterday: 'Yesterday',
+  },
+  status: {
+    offline: 'No connection. Retrying…',
   },
   errors: {
     notAuthorized: (status: string) =>
