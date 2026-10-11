@@ -1,0 +1,44 @@
+@use '../../../styles/variables' as *;
+
+.row {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.outgoing {
+  justify-content: flex-end;
+}
+
+.bubble {
+  max-width: min(70%, 560px);
+  padding: 6px 12px;
+  border-radius: 16px 16px 16px 4px;
+  background: $bubble-in;
+  box-shadow: 0 1px 1px rgba(0, 0, 0, 0.06);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+
+  .outgoing & {
+    border-radius: 16px 16px 4px 16px;
+    background: $bubble-out;
+  }
+
+  @media (max-width: $mobile) {
+    max-width: 85%;
+  }
+}
+
+.text {
+  font-size: 15px;
+  line-height: 1.4;
+  color: $text;
+}
+
+// Время прижато к правому нижнему углу пузыря и обтекается текстом
+.time {
+  float: right;
+  margin: 6px 0 -4px 12px;
+  font-size: 11px;
+  line-height: 1.4;
+  color: $text-dim;
+}
