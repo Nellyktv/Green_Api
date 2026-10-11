@@ -24,28 +24,25 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { chat } from '../../theme';
 import type { Credentials } from '../../types';
 import { LanguageSwitch } from '../LanguageSwitch/LanguageSwitch';
-import { CONSOLE_URL, initialForm, loginFields } from './loginPageData';
+import { CONSOLE_URL, initialForm } from './loginPageData';
 
 export const LoginPage = () => {
   const [form, setForm] = useState<Credentials>(initialForm);
   const [showToken, setShowToken] = useState(false);
-  // null = the user has not touched the toggle, so the section follows the login error
-  const [advancedToggle, setAdvancedToggle] = useState<boolean | null>(null);
+  const [advancedOpen, setAdvancedOpen] = useState(false);
   const { submit, loading, error } = useLogin();
   const t = useTranslation();
 
-  const canSubmit = loginFields.every((name) => form[name].trim() !== '');
-  const advancedOpen = advancedToggle ?? Boolean(error);
+  const canSubmit = Object.values(form).every((value) => value.trim() !== '');
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
-  const handleSubmit = (e: SubmitEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
-    // Let a new failed attempt re-open the section even if the user collapsed it earlier
-    setAdvancedToggle(null);
-    void submit(form);
+    // A failed attempt may be caused by apiUrl, so show it
+    if (!(await submit(form))) setAdvancedOpen(true);
   };
 
   return (
@@ -137,7 +134,7 @@ export const LoginPage = () => {
             size='small'
             aria-expanded={advancedOpen}
             endIcon={advancedOpen ? <ExpandLessRounded /> : <ExpandMoreRounded />}
-            onClick={() => setAdvancedToggle(!advancedOpen)}
+            onClick={() => setAdvancedOpen(!advancedOpen)}
           >
             {t.login.advanced}
           </Button>

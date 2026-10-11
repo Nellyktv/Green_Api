@@ -20,15 +20,16 @@ export const useLogin = () => {
       const { stateInstance } = await getStateInstance(credentials);
       if (stateInstance === 'authorized') {
         login(credentials);
-      } else {
-        setError(t.errors.notAuthorized(stateInstance));
+        return true;
       }
+      setError(t.errors.notAuthorized(stateInstance));
     } catch (err) {
       console.error(err);
       setError(t.errors.connection);
     } finally {
       setLoading(false);
     }
+    return false;
   };
 
   return { submit, loading, error };
