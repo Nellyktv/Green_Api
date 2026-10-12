@@ -2,6 +2,8 @@
 
 Веб-чат для отправки и получения текстовых сообщений в Telegram через [GREEN-API](https://green-api.com/telegram). Тестовое задание на позицию «Фронтенд разработчик React». Внешний вид сделан по мотивам [web.max.ru](https://web.max.ru/).
 
+**Онлайн-версия:** https://green-apitesttask-lac.vercel.app/
+
 ![Чат](docs/screenshots/chat.png)
 
 ## Скриншоты
@@ -109,4 +111,4 @@ pnpm preview      # посмотреть сборку локально
 
 ## Деплой
 
-Это статический сайт: собрать `pnpm build` и выложить папку `dist` на любой хостинг (Vercel, Netlify, GitHub Pages). Для Vercel/Netlify достаточно импортировать репозиторий — настройки Vite подхватятся сами.
+Онлайн-версия развёрнута на Vercel: https://green-apitesttask-lac.vercel.app/. Это статический сайт: собрать `pnpm build` и выложить папку `dist` на любой хостинг (Vercel, Netlify, GitHub Pages). Для Vercel/Netlify достаточно импортировать репозиторий — настройки Vite подхватятся сами.
