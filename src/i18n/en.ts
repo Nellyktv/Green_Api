@@ -14,6 +14,11 @@ export const en: Translation = {
     advanced: 'Advanced',
     showToken: 'Show token',
     hideToken: 'Hide token',
+    errors: {
+      required: 'This field is required',
+      idInstance: 'idInstance contains digits only',
+      apiUrl: 'Use an address like https://api.green-api.com',
+    },
   },
   sidebar: {
     title: 'Chats',

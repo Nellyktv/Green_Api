@@ -14,6 +14,11 @@ export const ru = {
     advanced: 'Дополнительно',
     showToken: 'Показать токен',
     hideToken: 'Скрыть токен',
+    errors: {
+      required: 'Заполните поле',
+      idInstance: 'idInstance состоит только из цифр',
+      apiUrl: 'Адрес вида https://api.green-api.com',
+    },
   },
   sidebar: {
     title: 'Чаты',

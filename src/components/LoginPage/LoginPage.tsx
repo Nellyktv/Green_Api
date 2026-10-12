@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type SubmitEvent } from 'react';
+import { useState, type ChangeEvent, type FocusEvent, type SubmitEvent } from 'react';
 import {
   Alert,
   Avatar,
@@ -21,6 +21,7 @@ import VisibilityOffRounded from '@mui/icons-material/VisibilityOffRounded';
 import VisibilityRounded from '@mui/icons-material/VisibilityRounded';
 import { useLogin } from '../../hooks/useLogin';
 import { useTranslation } from '../../hooks/useTranslation';
+import { validateCredentials } from '../../lib/credentials';
 import type { Credentials } from '../../types';
 import { LanguageSwitch } from '../LanguageSwitch/LanguageSwitch';
 import { CONSOLE_URL, initialForm } from './loginPageData';
@@ -43,14 +44,41 @@ export const LoginPage = () => {
   const { submit, loading, error } = useLogin();
   const t = useTranslation();
 
-  const canSubmit = Object.values(form).every((value) => value.trim() !== '');
+  const [touched, setTouched] = useState<Partial<Record<keyof Credentials, boolean>>>({});
+
+  const errors = validateCredentials(form);
+  const canSubmit = Object.keys(errors).length === 0;
+  // The field is hidden by default, so an invalid apiUrl must open it
+  const advancedShown = advancedOpen || Boolean(errors.apiUrl);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
+    setTouched({ ...touched, [e.target.name]: true });
+  };
+
+  // An error is shown only after the user has left the field
+  const fieldProps = (name: keyof Credentials) => {
+    const code = touched[name] ? errors[name] : undefined;
+    return {
+      name,
+      label: name,
+      value: form[name],
+      onChange: handleChange,
+      onBlur: handleBlur,
+      error: Boolean(code),
+      helperText: code && t.login.errors[code],
+      autoComplete: 'off',
+    };
+  };
+
+  const apiUrlProps = fieldProps('apiUrl');
+
   const handleSubmit = async (e: SubmitEvent<HTMLFormElement>) => {
     e.preventDefault();
+    if (!canSubmit) return;
     // A failed attempt may be caused by apiUrl, so show it
     if (!(await submit(form))) setAdvancedOpen(true);
   };
@@ -85,20 +113,10 @@ export const LoginPage = () => {
           <Typography variant='caption'>{t.login.subtitle}</Typography>
         </Stack>
 
+        <TextField {...fieldProps('idInstance')} />
         <TextField
-          name='idInstance'
-          label='idInstance'
-          value={form.idInstance}
-          onChange={handleChange}
-          autoComplete='off'
-        />
-        <TextField
-          name='apiTokenInstance'
-          label='apiTokenInstance'
+          {...fieldProps('apiTokenInstance')}
           type={showToken ? 'text' : 'password'}
-          value={form.apiTokenInstance}
-          onChange={handleChange}
-          autoComplete='off'
           slotProps={{
             input: {
               endAdornment: (
@@ -119,22 +137,15 @@ export const LoginPage = () => {
         <Box sx={fullWidthSx}>
           <Button
             size='small'
-            aria-expanded={advancedOpen}
-            endIcon={advancedOpen ? <ExpandLessRounded /> : <ExpandMoreRounded />}
+            aria-expanded={advancedShown}
+            endIcon={advancedShown ? <ExpandLessRounded /> : <ExpandMoreRounded />}
             onClick={() => setAdvancedOpen(!advancedOpen)}
           >
             {t.login.advanced}
           </Button>
-          <Collapse in={advancedOpen}>
+          <Collapse in={advancedShown}>
             <Box sx={advancedFieldSx}>
-              <TextField
-                name='apiUrl'
-                label='apiUrl'
-                helperText={t.login.hints.apiUrl}
-                value={form.apiUrl}
-                onChange={handleChange}
-                autoComplete='off'
-              />
+              <TextField {...apiUrlProps} helperText={apiUrlProps.helperText || t.login.hints.apiUrl} />
             </Box>
           </Collapse>
         </Box>

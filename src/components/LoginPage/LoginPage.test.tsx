@@ -106,6 +106,32 @@ describe('LoginPage', () => {
     expect(screen.getByLabelText('apiUrl')).toBeVisible();
   });
 
+  it('shows a field error after leaving an invalid idInstance and keeps the button disabled', async () => {
+    render(<LoginPage />);
+    const user = userEvent.setup();
+
+    await user.type(screen.getByLabelText('idInstance'), '41000abc');
+    expect(screen.queryByText('idInstance contains digits only')).not.toBeInTheDocument();
+
+    await user.tab();
+    expect(screen.getByText('idInstance contains digits only')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Sign in' })).toBeDisabled();
+  });
+
+  it('opens Advanced and explains the problem when apiUrl is not an https address', async () => {
+    render(<LoginPage />);
+    const user = await fillForm();
+
+    await user.click(screen.getByRole('button', { name: 'Advanced' }));
+    const apiUrl = screen.getByLabelText('apiUrl');
+    await user.clear(apiUrl);
+    await user.type(apiUrl, 'api.green-api.com');
+    await user.tab();
+
+    expect(screen.getByText('Use an address like https://api.green-api.com')).toBeInTheDocument();
+    expect(screen.getByRole('button', { name: 'Sign in' })).toBeDisabled();
+  });
+
   it('switches the interface language', async () => {
     const user = userEvent.setup();
     render(<LoginPage />);
