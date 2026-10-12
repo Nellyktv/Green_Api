@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render, screen } from '../../../test/render';
 import { useAppStore } from '../../../store/useAppStore';
 import { createMessage } from '../../../test/fixtures';
 import { MessageList } from './MessageList';

@@ -8,6 +8,7 @@ import { useChatStore } from '../../store/useChatStore';
 import type { Credentials } from '../../types';
 import { LanguageSwitch } from '../LanguageSwitch/LanguageSwitch';
 import { NewChatDialog } from '../NewChatDialog/NewChatDialog';
+import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 import { ChatListItem } from './ChatListItem/ChatListItem';
 import { emptySx, headerSx, listSx, sidebarSx } from './sidebarStyles';
 
@@ -37,6 +38,7 @@ export const Sidebar = ({ credentials }: Props) => {
           </Typography>
         </Box>
         <LanguageSwitch />
+        <ThemeToggle />
         <Tooltip title={t.sidebar.newChat}>
           <IconButton color='primary' onClick={() => setDialogOpen(true)} aria-label={t.sidebar.newChat}>
             <EditSquare />

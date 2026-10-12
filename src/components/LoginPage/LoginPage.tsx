@@ -24,6 +24,7 @@ import { useTranslation } from '../../hooks/useTranslation';
 import { validateCredentials } from '../../lib/credentials';
 import type { Credentials } from '../../types';
 import { LanguageSwitch } from '../LanguageSwitch/LanguageSwitch';
+import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 import { CONSOLE_URL, initialForm } from './loginPageData';
 import {
   advancedFieldSx,
@@ -31,10 +32,10 @@ import {
   cardSx,
   fullWidthSx,
   headerSx,
-  helpButtonSx,
   hintSx,
   languageSwitchSx,
   pageSx,
+  topRightSx,
 } from './loginPageStyles';
 
 export const LoginPage = () => {
@@ -94,15 +95,12 @@ export const LoginPage = () => {
         <Box sx={languageSwitchSx}>
           <LanguageSwitch />
         </Box>
-        <IconButton
-          aria-label={t.login.help}
-          href={CONSOLE_URL}
-          target='_blank'
-          rel='noreferrer'
-          sx={helpButtonSx}
-        >
-          <HelpOutlineRounded />
-        </IconButton>
+        <Box sx={topRightSx}>
+          <ThemeToggle />
+          <IconButton aria-label={t.login.help} href={CONSOLE_URL} target='_blank' rel='noreferrer'>
+            <HelpOutlineRounded />
+          </IconButton>
+        </Box>
 
         <Stack sx={headerSx}>
           <Avatar variant='rounded' sx={avatarSx}>

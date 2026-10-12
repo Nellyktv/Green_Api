@@ -1,5 +1,4 @@
 import type { SxProps, Theme } from '@mui/material';
-import { chat } from '../../../theme';
 
 export const rowSx = (outgoing: boolean): SxProps<Theme> => ({
   display: 'flex',
@@ -11,8 +10,8 @@ export const bubbleSx = (outgoing: boolean): SxProps<Theme> => ({
   px: 1.5,
   py: 0.75,
   borderRadius: outgoing ? '16px 16px 4px 16px' : '16px 16px 16px 4px',
-  bgcolor: outgoing ? chat.bubbleOut : chat.bubbleIn,
-  boxShadow: '0 1px 1px rgba(0, 0, 0, 0.06)',
+  bgcolor: outgoing ? 'chat.bubbleOut' : 'chat.bubbleIn',
+  boxShadow: (theme) => theme.palette.chat.bubbleShadow,
   whiteSpace: 'pre-wrap',
   overflowWrap: 'anywhere',
 });

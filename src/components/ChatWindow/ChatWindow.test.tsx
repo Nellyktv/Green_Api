@@ -1,5 +1,5 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import { act, render, screen, waitFor } from '@testing-library/react';
+import { act, render, screen, waitFor } from '../../test/render';
 import userEvent from '@testing-library/user-event';
 import { getChatHistory, sendMessage } from '../../api/greenApi';
 import { useAppStore } from '../../store/useAppStore';

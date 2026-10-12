@@ -56,6 +56,10 @@ export const ru = {
     sendFailed: 'Не удалось отправить сообщение',
   },
   language: 'Язык',
+  theme: {
+    toDark: 'Тёмная тема',
+    toLight: 'Светлая тема',
+  },
 };
 
 export type Translation = typeof ru;

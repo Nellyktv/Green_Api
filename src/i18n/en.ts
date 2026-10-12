@@ -56,4 +56,8 @@ export const en: Translation = {
     sendFailed: 'Could not send the message',
   },
   language: 'Language',
+  theme: {
+    toDark: 'Dark theme',
+    toLight: 'Light theme',
+  },
 };

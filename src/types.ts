@@ -1,5 +1,7 @@
 export type Locale = 'ru' | 'en';
 
+export type ThemeMode = 'light' | 'dark';
+
 export interface Credentials {
   idInstance: string;
   apiTokenInstance: string;
