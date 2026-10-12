@@ -6,6 +6,7 @@ import { ConnectionBanner } from '../ConnectionBanner/ConnectionBanner';
 import { Sidebar } from '../Sidebar/Sidebar';
 import { ChatWindow } from '../ChatWindow/ChatWindow';
 import { EmptyChat } from '../EmptyChat/EmptyChat';
+import { bodySx, mainSx, pageSx } from './chatPageStyles';
 
 interface Props {
   credentials: Credentials;
@@ -25,12 +26,12 @@ export const ChatPage = ({ credentials }: Props) => {
   const showChat = !isMobile || Boolean(activeChat);
 
   return (
-    <Box sx={{ display: 'flex', flexDirection: 'column', height: '100dvh', overflow: 'hidden', bgcolor: 'background.default' }}>
+    <Box sx={pageSx}>
       <ConnectionBanner />
-      <Box sx={{ display: 'flex', flex: 1, minHeight: 0 }}>
+      <Box sx={bodySx}>
         {showSidebar && <Sidebar credentials={credentials} />}
         {showChat && (
-          <Box component='main' sx={{ flex: 1, minWidth: 0, display: 'flex', flexDirection: 'column' }}>
+          <Box component='main' sx={mainSx}>
             {activeChat ? (
               <ChatWindow
                 key={activeChat.chatId}

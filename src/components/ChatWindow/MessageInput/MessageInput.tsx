@@ -2,6 +2,7 @@ import { useState, type KeyboardEvent, type SubmitEvent } from 'react';
 import { CircularProgress, Fab, InputBase, Stack } from '@mui/material';
 import SendRounded from '@mui/icons-material/SendRounded';
 import { useTranslation } from '../../../hooks/useTranslation';
+import { formSx, inputSx } from './messageInputStyles';
 
 const MAX_MESSAGE_LENGTH = 4096;
 
@@ -41,16 +42,7 @@ export const MessageInput = ({ onSend }: Props) => {
       component='form'
       direction='row'
       onSubmit={handleSubmit}
-      sx={{
-        alignItems: 'flex-end',
-        gap: 1,
-        px: { xs: 1, md: 2.5 },
-        pt: { xs: 1, md: 1.5 },
-        pb: { xs: 'calc(8px + env(safe-area-inset-bottom))', md: 1.5 },
-        bgcolor: 'background.paper',
-        borderTop: 1,
-        borderColor: 'divider',
-      }}
+      sx={formSx}
     >
       <InputBase
         multiline
@@ -62,13 +54,7 @@ export const MessageInput = ({ onSend }: Props) => {
         onChange={(e) => setText(e.target.value)}
         onKeyDown={handleKeyDown}
         slotProps={{ input: { maxLength: MAX_MESSAGE_LENGTH, 'aria-label': t.chat.placeholder } }}
-        sx={{
-          px: 2,
-          py: 1.25,
-          bgcolor: 'background.default',
-          borderRadius: 5,
-          fontSize: { xs: 16, md: 15 },
-        }}
+        sx={inputSx}
       />
       <Fab type='submit' size='medium' color='primary' disabled={!canSend} aria-label={t.chat.send}>
         {sending ? <CircularProgress size={20} color='inherit' /> : <SendRounded />}

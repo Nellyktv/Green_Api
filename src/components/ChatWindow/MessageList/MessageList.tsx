@@ -3,12 +3,12 @@ import { Stack } from '@mui/material';
 import { useTranslation } from '../../../hooks/useTranslation';
 import { formatDayLabel, getDayKey } from '../../../lib/formatDate';
 import { useAppStore } from '../../../store/useAppStore';
-import { chatBackgroundSx } from '../../../theme';
 import type { Message } from '../../../types';
 import { ChatNotice } from '../../ChatNotice/ChatNotice';
 import { DateDivider } from '../DateDivider/DateDivider';
 import { MessageBubble } from '../MessageBubble/MessageBubble';
 import { MessageSkeleton } from '../MessageSkeleton/MessageSkeleton';
+import { listSx } from './messageListStyles';
 
 const NEAR_BOTTOM_PX = 120;
 
@@ -64,17 +64,7 @@ export const MessageList = ({ messages, loading }: Props) => {
     <Stack
       ref={listRef}
       onScroll={handleScroll}
-      sx={{
-        ...chatBackgroundSx,
-        flex: 1,
-        minHeight: 0,
-        overflowY: 'auto',
-        gap: 0.75,
-        px: { xs: 1.5, md: 3 },
-        py: { xs: 1.5, md: 2 },
-        // While there are few messages, stick them to the bottom, like in messengers
-        '& > :first-child': { mt: 'auto' },
-      }}
+      sx={listSx}
     >
       {renderContent()}
     </Stack>

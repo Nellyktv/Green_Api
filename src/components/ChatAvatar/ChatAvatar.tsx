@@ -1,6 +1,7 @@
 import { Avatar } from '@mui/material';
 import PersonRounded from '@mui/icons-material/PersonRounded';
 import { getAvatarGradient, getInitials } from '../../lib/avatar';
+import { avatarSx } from './chatAvatarStyles';
 
 interface Props {
   chatId: string;
@@ -13,14 +14,7 @@ export const ChatAvatar = ({ chatId, name, size = 48 }: Props) => {
 
   return (
     <Avatar
-      sx={{
-        width: size,
-        height: size,
-        flexShrink: 0,
-        background: getAvatarGradient(chatId),
-        color: 'common.white',
-        fontWeight: 600,
-      }}
+      sx={avatarSx(size, getAvatarGradient(chatId))}
     >
       {initials || <PersonRounded />}
     </Avatar>

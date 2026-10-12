@@ -9,8 +9,7 @@ import type { Credentials } from '../../types';
 import { LanguageSwitch } from '../LanguageSwitch/LanguageSwitch';
 import { NewChatDialog } from '../NewChatDialog/NewChatDialog';
 import { ChatListItem } from './ChatListItem/ChatListItem';
-
-const SIDEBAR_WIDTH = 360;
+import { emptySx, headerSx, listSx, sidebarSx } from './sidebarStyles';
 
 interface Props {
   credentials: Credentials;
@@ -28,16 +27,9 @@ export const Sidebar = ({ credentials }: Props) => {
   return (
     <Stack
       component='aside'
-      sx={{
-        width: { xs: '100%', md: SIDEBAR_WIDTH },
-        flexShrink: 0,
-        bgcolor: 'background.paper',
-        borderRight: 1,
-        borderRightWidth: { xs: 0, md: 1 },
-        borderColor: 'divider',
-      }}
+      sx={sidebarSx}
     >
-      <Stack direction='row' sx={{ alignItems: 'center', gap: 0.5, pt: 2, pr: 1.5, pb: 1.5, pl: 2.5 }}>
+      <Stack direction='row' sx={headerSx}>
         <Box sx={{ flexGrow: 1, minWidth: 0 }}>
           <Typography variant='h6'>{t.sidebar.title}</Typography>
           <Typography variant='caption'>
@@ -58,11 +50,11 @@ export const Sidebar = ({ credentials }: Props) => {
       </Stack>
 
       {chats.length === 0 ? (
-        <Typography variant='body2' sx={{ px: 3, py: 4, textAlign: 'center', color: 'text.secondary' }}>
+        <Typography variant='body2' sx={emptySx}>
           {t.sidebar.empty}
         </Typography>
       ) : (
-        <List disablePadding sx={{ flex: 1, overflowY: 'auto', pb: 1 }}>
+        <List disablePadding sx={listSx}>
           {chats.map((el) => (
             <ChatListItem
               key={el.chatId}

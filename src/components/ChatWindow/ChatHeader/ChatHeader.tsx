@@ -3,6 +3,7 @@ import ArrowBackRounded from '@mui/icons-material/ArrowBackRounded';
 import { useTranslation } from '../../../hooks/useTranslation';
 import type { Chat } from '../../../types';
 import { ChatAvatar } from '../../ChatAvatar/ChatAvatar';
+import { headerSx } from './chatHeaderStyles';
 
 interface Props {
   chat: Chat;
@@ -16,16 +17,7 @@ export const ChatHeader = ({ chat, onBack }: Props) => {
     <Stack
       component='header'
       direction='row'
-      sx={{
-        alignItems: 'center',
-        gap: { xs: 1, md: 1.5 },
-        minHeight: { xs: 56, md: 64 },
-        px: { xs: 1.5, md: 2.5 },
-        py: { xs: 1, md: 1.25 },
-        bgcolor: 'background.paper',
-        borderBottom: 1,
-        borderColor: 'divider',
-      }}
+      sx={headerSx}
     >
       {onBack && (
         <IconButton edge='start' onClick={onBack} aria-label={t.chat.back}>
