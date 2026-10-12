@@ -21,10 +21,20 @@ import VisibilityOffRounded from '@mui/icons-material/VisibilityOffRounded';
 import VisibilityRounded from '@mui/icons-material/VisibilityRounded';
 import { useLogin } from '../../hooks/useLogin';
 import { useTranslation } from '../../hooks/useTranslation';
-import { chat } from '../../theme';
 import type { Credentials } from '../../types';
 import { LanguageSwitch } from '../LanguageSwitch/LanguageSwitch';
 import { CONSOLE_URL, initialForm } from './loginPageData';
+import {
+  advancedFieldSx,
+  avatarSx,
+  cardSx,
+  fullWidthSx,
+  headerSx,
+  helpButtonSx,
+  hintSx,
+  languageSwitchSx,
+  pageSx,
+} from './loginPageStyles';
 
 export const LoginPage = () => {
   const [form, setForm] = useState<Credentials>(initialForm);
@@ -46,37 +56,14 @@ export const LoginPage = () => {
   };
 
   return (
-    <Box
-      sx={{
-        minHeight: '100dvh',
-        display: 'flex',
-        alignItems: { xs: 'flex-start', md: 'center' },
-        justifyContent: 'center',
-        p: { xs: 0, md: 2 },
-        bgcolor: 'background.paper',
-        background: { md: chat.loginBackdrop },
-      }}
-    >
+    <Box sx={pageSx}>
       <Paper
         component='form'
         elevation={0}
         onSubmit={handleSubmit}
-        sx={{
-          position: 'relative',
-          display: 'flex',
-          flexDirection: 'column',
-          alignItems: 'center',
-          gap: 2,
-          width: '100%',
-          maxWidth: { md: 420 },
-          p: { xs: '24px 16px', md: '32px 28px' },
-          bgcolor: { xs: 'background.paper', md: chat.loginCard },
-          backdropFilter: { md: 'blur(16px)' },
-          boxShadow: { xs: 'none', md: chat.loginCardShadow },
-          borderRadius: { xs: 0, md: '28px' },
-        }}
+        sx={cardSx}
       >
-        <Box sx={{ position: 'absolute', top: 12, left: 12 }}>
+        <Box sx={languageSwitchSx}>
           <LanguageSwitch />
         </Box>
         <IconButton
@@ -84,13 +71,13 @@ export const LoginPage = () => {
           href={CONSOLE_URL}
           target='_blank'
           rel='noreferrer'
-          sx={{ position: 'absolute', top: 12, right: 12 }}
+          sx={helpButtonSx}
         >
           <HelpOutlineRounded />
         </IconButton>
 
-        <Stack sx={{ alignItems: 'center', gap: 0.5, mt: 4, mb: 1, textAlign: 'center' }}>
-          <Avatar variant='rounded' sx={{ width: 64, height: 64, mb: 1, background: chat.accentGradient }}>
+        <Stack sx={headerSx}>
+          <Avatar variant='rounded' sx={avatarSx}>
             <ChatBubbleRounded fontSize='large' />
           </Avatar>
           <Typography variant='h6'>{t.login.title}</Typography>
@@ -129,7 +116,7 @@ export const LoginPage = () => {
           }}
         />
 
-        <Box sx={{ width: '100%' }}>
+        <Box sx={fullWidthSx}>
           <Button
             size='small'
             aria-expanded={advancedOpen}
@@ -139,7 +126,7 @@ export const LoginPage = () => {
             {t.login.advanced}
           </Button>
           <Collapse in={advancedOpen}>
-            <Box sx={{ pt: 1 }}>
+            <Box sx={advancedFieldSx}>
               <TextField
                 name='apiUrl'
                 label='apiUrl'
@@ -152,7 +139,7 @@ export const LoginPage = () => {
           </Collapse>
         </Box>
 
-        {error && <Alert severity='error' sx={{ width: '100%' }}>{error}</Alert>}
+        {error && <Alert severity='error' sx={fullWidthSx}>{error}</Alert>}
 
         <Button
           type='submit'
@@ -160,12 +147,12 @@ export const LoginPage = () => {
           size='large'
           loading={loading}
           disabled={!canSubmit}
-          sx={{ width: '100%' }}
+          sx={fullWidthSx}
         >
           {t.login.submit}
         </Button>
 
-        <Typography variant='caption' sx={{ textAlign: 'center' }}>
+        <Typography variant='caption' sx={hintSx}>
           {t.login.consoleHint}{' '}
           <Link href={CONSOLE_URL} target='_blank' rel='noreferrer'>
             {t.login.consoleLink}
