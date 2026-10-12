@@ -2,7 +2,8 @@ import type { Credentials } from '../types';
 
 export const ru = {
   login: {
-    subtitle: 'Telegram через GREEN-API',
+    subtitle: 'Telegram и WhatsApp через GREEN-API',
+    messenger: 'Мессенджер',
     submit: 'Войти',
     hints: {
       apiUrl: 'Если в личном кабинете указан другой — скопируйте его',
@@ -32,6 +33,7 @@ export const ru = {
   newChat: {
     title: 'Новый чат',
     label: 'Номер телефона или @username',
+    labelPhone: 'Номер телефона',
     hint: 'Номер в международном формате, с кодом страны',
     cancel: 'Отмена',
     submit: 'Создать чат',
@@ -48,10 +50,11 @@ export const ru = {
   },
   errors: {
     notAuthorized: (status: string) =>
-      `Инстанс не авторизован (статус: ${status}). Привяжите аккаунт Telegram в личном кабинете GREEN-API`,
+      `Инстанс не авторизован (статус: ${status}). Привяжите аккаунт мессенджера в личном кабинете GREEN-API`,
     connection: 'Не удалось подключиться. Проверьте idInstance, apiTokenInstance и apiUrl',
     invalidRecipient: 'Введите номер в международном формате или @username',
-    accountNotFound: 'Аккаунт Telegram не найден',
+    accountNotFound: 'Аккаунт в мессенджере не найден',
+    invalidPhone: 'Введите номер в международном формате',
     checkFailed: 'Не удалось проверить номер, попробуйте ещё раз',
     sendFailed: 'Не удалось отправить сообщение',
   },

@@ -1,5 +1,6 @@
 import type {
   CheckAccountResponse,
+  CheckWhatsappResponse,
   Credentials,
   DeleteNotificationResponse,
   GreenApiNotification,
@@ -24,6 +25,14 @@ export const getStateInstance = async (credentials: Credentials) => {
 
 export const checkAccount = async (credentials: Credentials, recipient: Recipient) => {
   const { data } = await api.post<CheckAccountResponse>(buildMethodUrl(credentials, 'checkAccount'), recipient);
+  return data;
+};
+
+// WhatsApp chats are addressed as <number>@c.us, so the lookup only tells whether the account exists
+export const checkWhatsapp = async (credentials: Credentials, phoneNumber: number) => {
+  const { data } = await api.post<CheckWhatsappResponse>(buildMethodUrl(credentials, 'checkWhatsapp'), {
+    chatId: `${phoneNumber}@c.us`,
+  });
   return data;
 };
 

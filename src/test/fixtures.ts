@@ -5,6 +5,7 @@ export const credentials: Credentials = {
   idInstance: '4100000001',
   apiTokenInstance: 'token123',
   apiUrl: 'https://4100.api.green-api.com',
+  messenger: 'telegram',
 };
 
 export const CHAT_ID = '10000000';

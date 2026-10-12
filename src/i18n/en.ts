@@ -2,7 +2,8 @@ import type { Translation } from './ru';
 
 export const en: Translation = {
   login: {
-    subtitle: 'Telegram via GREEN-API',
+    subtitle: 'Telegram and WhatsApp via GREEN-API',
+    messenger: 'Messenger',
     submit: 'Sign in',
     hints: {
       apiUrl: 'If your console shows a different one, copy it here',
@@ -32,6 +33,7 @@ export const en: Translation = {
   newChat: {
     title: 'New chat',
     label: 'Phone number or @username',
+    labelPhone: 'Phone number',
     hint: 'International format, with the country code',
     cancel: 'Cancel',
     submit: 'Create chat',
@@ -48,10 +50,11 @@ export const en: Translation = {
   },
   errors: {
     notAuthorized: (status: string) =>
-      `The instance is not authorized (status: ${status}). Link your Telegram account in the GREEN-API console`,
+      `The instance is not authorized (status: ${status}). Link your messenger account in the GREEN-API console`,
     connection: 'Could not connect. Check idInstance, apiTokenInstance and apiUrl',
     invalidRecipient: 'Enter a number in international format or a @username',
-    accountNotFound: 'Telegram account not found',
+    accountNotFound: 'Account not found in the messenger',
+    invalidPhone: 'Enter a number in international format',
     checkFailed: 'Could not check the number, please try again',
     sendFailed: 'Could not send the message',
   },

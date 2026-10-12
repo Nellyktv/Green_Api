@@ -1,4 +1,5 @@
 import { describe, expect, it } from 'vitest';
+import type { Credentials } from '../types';
 import { DEFAULT_API_URL, normalizeCredentials, validateCredentials } from './credentials';
 
 describe('normalizeCredentials', () => {
@@ -8,22 +9,29 @@ describe('normalizeCredentials', () => {
         idInstance: ' 4100000001 ',
         apiTokenInstance: ' token123\n',
         apiUrl: 'https://4100.api.green-api.com/ ',
+        messenger: 'whatsapp',
       }),
     ).toEqual({
       idInstance: '4100000001',
       apiTokenInstance: 'token123',
       apiUrl: 'https://4100.api.green-api.com',
+      messenger: 'whatsapp',
     });
   });
 
   it('uses the default apiUrl when the field is empty', () => {
-    const credentials = normalizeCredentials({ idInstance: '1', apiTokenInstance: '2', apiUrl: '  ' });
+    const credentials = normalizeCredentials({ idInstance: '1', apiTokenInstance: '2', apiUrl: '  ', messenger: 'telegram' });
     expect(credentials.apiUrl).toBe(DEFAULT_API_URL);
   });
 });
 
 describe('validateCredentials', () => {
-  const valid = { idInstance: '4100000001', apiTokenInstance: 'token123', apiUrl: 'https://4100.api.green-api.com' };
+  const valid: Credentials = {
+    idInstance: '4100000001',
+    apiTokenInstance: 'token123',
+    apiUrl: 'https://4100.api.green-api.com',
+    messenger: 'telegram',
+  };
 
   it('accepts correct data, also with an empty apiUrl', () => {
     expect(validateCredentials(valid)).toEqual({});

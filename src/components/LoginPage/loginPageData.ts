@@ -5,6 +5,7 @@ export const initialForm: Credentials = {
   idInstance: '',
   apiTokenInstance: '',
   apiUrl: DEFAULT_API_URL,
+  messenger: 'telegram',
 };
 
 export const CONSOLE_URL = 'https://console.green-api.com';

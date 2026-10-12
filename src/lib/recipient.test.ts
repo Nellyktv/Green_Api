@@ -12,6 +12,11 @@ describe('parseRecipient', () => {
     expect(parseRecipient('@ivan_petrov')).toEqual({ username: '@ivan_petrov' });
   });
 
+  it('accepts phone numbers but rejects @username for WhatsApp', () => {
+    expect(parseRecipient('+375 29 123-45-67', 'whatsapp')).toEqual({ phoneNumber: 375291234567 });
+    expect(parseRecipient('@ivan_petrov', 'whatsapp')).toBeNull();
+  });
+
   it('rejects an empty string, a short number, letters in a number and an invalid username', () => {
     expect(parseRecipient('   ')).toBeNull();
     expect(parseRecipient('12345')).toBeNull();

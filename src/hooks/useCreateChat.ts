@@ -1,9 +1,9 @@
 import { useState } from 'react';
-import { checkAccount } from '../api/greenApi';
+import { checkAccount, checkWhatsapp } from '../api/greenApi';
 import { getRecipientLabel, parseRecipient } from '../lib/recipient';
 import { useChatStore } from '../store/useChatStore';
 import { useTranslation } from './useTranslation';
-import type { Credentials } from '../types';
+import type { Credentials, Recipient } from '../types';
 
 export const useCreateChat = (credentials: Credentials) => {
   const openChat = useChatStore((s) => s.openChat);
@@ -11,11 +11,24 @@ export const useCreateChat = (credentials: Credentials) => {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState('');
 
-  // Telegram messages can only be sent by chatId, so first look it up by number via checkAccount
+  const whatsapp = credentials.messenger === 'whatsapp';
+
+  // Returns the chatId to write to, or null if the account does not exist.
+  // Telegram messages can only be sent by chatId, so it is looked up via checkAccount;
+  // in WhatsApp the chatId is simply <number>@c.us
+  const findChatId = async (recipient: Recipient) => {
+    if (whatsapp && 'phoneNumber' in recipient) {
+      const { existsWhatsapp } = await checkWhatsapp(credentials, recipient.phoneNumber);
+      return existsWhatsapp ? `${recipient.phoneNumber}@c.us` : null;
+    }
+    const account = await checkAccount(credentials, recipient);
+    return account.exist ? account.chatId : null;
+  };
+
   const createChat = async (value: string) => {
-    const recipient = parseRecipient(value);
+    const recipient = parseRecipient(value, credentials.messenger);
     if (!recipient) {
-      setError(t.errors.invalidRecipient);
+      setError(whatsapp ? t.errors.invalidPhone : t.errors.invalidRecipient);
       return false;
     }
 
@@ -23,12 +36,12 @@ export const useCreateChat = (credentials: Credentials) => {
     setError('');
 
     try {
-      const account = await checkAccount(credentials, recipient);
-      if (!account.exist) {
+      const chatId = await findChatId(recipient);
+      if (!chatId) {
         setError(t.errors.accountNotFound);
         return false;
       }
-      openChat({ chatId: account.chatId, name: getRecipientLabel(recipient) });
+      openChat({ chatId, name: getRecipientLabel(recipient) });
       return true;
     } catch (err) {
       console.error(err);

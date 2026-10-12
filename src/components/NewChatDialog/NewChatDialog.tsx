@@ -35,7 +35,7 @@ export const NewChatDialog = ({ open, credentials, onClose }: Props) => {
           <TextField
             autoFocus
             margin='dense'
-            label={t.newChat.label}
+            label={credentials.messenger === 'whatsapp' ? t.newChat.labelPhone : t.newChat.label}
             placeholder='+375 29 123-45-67'
             value={value}
             onChange={(e) => setValue(e.target.value)}

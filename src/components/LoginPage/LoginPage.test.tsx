@@ -41,7 +41,12 @@ describe('LoginPage', () => {
     const user = await fillForm();
     await user.click(screen.getByRole('button', { name: 'Sign in' }));
 
-    const expected = { idInstance: '4100000001', apiTokenInstance: 'token123', apiUrl: DEFAULT_API_URL };
+    const expected = {
+      idInstance: '4100000001',
+      apiTokenInstance: 'token123',
+      apiUrl: DEFAULT_API_URL,
+      messenger: 'telegram',
+    };
     expect(getStateInstance).toHaveBeenCalledWith(expected);
     expect(useAuthStore.getState().credentials).toEqual(expected);
   });
@@ -130,6 +135,17 @@ describe('LoginPage', () => {
 
     expect(screen.getByText('Use an address like https://api.green-api.com')).toBeInTheDocument();
     expect(screen.getByRole('button', { name: 'Sign in' })).toBeDisabled();
+  });
+
+  it('signs in with the selected messenger', async () => {
+    vi.mocked(getStateInstance).mockResolvedValue({ stateInstance: 'authorized' });
+    render(<LoginPage />);
+
+    const user = await fillForm();
+    await user.click(screen.getByRole('button', { name: 'WhatsApp' }));
+    await user.click(screen.getByRole('button', { name: 'Sign in' }));
+
+    expect(useAuthStore.getState().credentials?.messenger).toBe('whatsapp');
   });
 
   it('switches the interface language', async () => {

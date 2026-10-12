@@ -1,4 +1,4 @@
-import { useState, type ChangeEvent, type FocusEvent, type SubmitEvent } from 'react';
+import { useState, type ChangeEvent, type FocusEvent, type MouseEvent, type SubmitEvent } from 'react';
 import {
   Alert,
   Avatar,
@@ -11,6 +11,8 @@ import {
   Paper,
   Stack,
   TextField,
+  ToggleButton,
+  ToggleButtonGroup,
   Typography,
 } from '@mui/material';
 import ChatBubbleRounded from '@mui/icons-material/ChatBubbleRounded';
@@ -22,7 +24,7 @@ import VisibilityRounded from '@mui/icons-material/VisibilityRounded';
 import { useLogin } from '../../hooks/useLogin';
 import { useTranslation } from '../../hooks/useTranslation';
 import { validateCredentials } from '../../lib/credentials';
-import type { Credentials } from '../../types';
+import type { Credentials, Messenger } from '../../types';
 import { LanguageSwitch } from '../LanguageSwitch/LanguageSwitch';
 import { ThemeToggle } from '../ThemeToggle/ThemeToggle';
 import { CONSOLE_URL, initialForm } from './loginPageData';
@@ -37,6 +39,8 @@ import {
   pageSx,
   topRightSx,
 } from './loginPageStyles';
+
+type TextFieldName = 'idInstance' | 'apiTokenInstance' | 'apiUrl';
 
 export const LoginPage = () => {
   const [form, setForm] = useState<Credentials>(initialForm);
@@ -56,12 +60,16 @@ export const LoginPage = () => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const handleMessengerChange = (_e: MouseEvent<HTMLElement>, messenger: Messenger | null) => {
+    if (messenger) setForm({ ...form, messenger });
+  };
+
   const handleBlur = (e: FocusEvent<HTMLInputElement>) => {
     setTouched({ ...touched, [e.target.name]: true });
   };
 
   // An error is shown only after the user has left the field
-  const fieldProps = (name: keyof Credentials) => {
+  const fieldProps = (name: TextFieldName) => {
     const code = touched[name] ? errors[name] : undefined;
     return {
       name,
@@ -111,6 +119,18 @@ export const LoginPage = () => {
           <Typography variant='caption'>{t.login.subtitle}</Typography>
         </Stack>
 
+        <ToggleButtonGroup
+          exclusive
+          fullWidth
+          size='small'
+          color='primary'
+          value={form.messenger}
+          onChange={handleMessengerChange}
+          aria-label={t.login.messenger}
+        >
+          <ToggleButton value='telegram'>Telegram</ToggleButton>
+          <ToggleButton value='whatsapp'>WhatsApp</ToggleButton>
+        </ToggleButtonGroup>
         <TextField {...fieldProps('idInstance')} />
         <TextField
           {...fieldProps('apiTokenInstance')}

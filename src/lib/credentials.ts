@@ -8,6 +8,7 @@ export const normalizeCredentials = (form: Credentials): Credentials => ({
   idInstance: form.idInstance.trim(),
   apiTokenInstance: form.apiTokenInstance.trim(),
   apiUrl: (form.apiUrl.trim() || DEFAULT_API_URL).replace(/\/+$/, ''),
+  messenger: form.messenger,
 });
 
 const isHttpsUrl = (value: string) => {

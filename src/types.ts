@@ -2,10 +2,14 @@ export type Locale = 'ru' | 'en';
 
 export type ThemeMode = 'light' | 'dark';
 
+export type Messenger = 'telegram' | 'whatsapp';
+
 export interface Credentials {
   idInstance: string;
   apiTokenInstance: string;
   apiUrl: string;
+  // Sessions saved before WhatsApp support have no value here and behave as Telegram
+  messenger: Messenger;
 }
 
 export interface Chat {
@@ -36,6 +40,10 @@ export interface CheckAccountResponse {
   chatId: string;
   username?: string;
   phoneNumber?: number;
+}
+
+export interface CheckWhatsappResponse {
+  existsWhatsapp: boolean;
 }
 
 export interface SendMessageResponse {

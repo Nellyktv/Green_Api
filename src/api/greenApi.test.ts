@@ -4,6 +4,7 @@ import api from './client';
 import {
   buildMethodUrl,
   checkAccount,
+  checkWhatsapp,
   deleteNotification,
   getChatHistory,
   HISTORY_COUNT,
@@ -42,6 +43,15 @@ describe('greenApi', () => {
     await checkAccount(credentials, { phoneNumber: 375291234567 });
 
     expect(api.post).toHaveBeenCalledWith(`${BASE}/checkAccount/token123`, { phoneNumber: 375291234567 });
+  });
+
+  it('checkWhatsapp asks about the <number>@c.us chat', async () => {
+    vi.mocked(api.post).mockResolvedValue(axiosResponse({ existsWhatsapp: true }));
+
+    const result = await checkWhatsapp(credentials, 375291234567);
+
+    expect(api.post).toHaveBeenCalledWith(`${BASE}/checkWhatsapp/token123`, { chatId: '375291234567@c.us' });
+    expect(result).toEqual({ existsWhatsapp: true });
   });
 
   it('getChatHistory requests the latest chat messages', async () => {
